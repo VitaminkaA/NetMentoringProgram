@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29806.167
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1DBAAAD0-C136-4F02-9F00-0619BFBE2D5B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntroductionToNet.Projects.ConsoleApp", "IntroductionToNet.ConsoleApp\IntroductionToNet.Projects.ConsoleApp.csproj", "{D3A31A0D-A2DE-475E-BB88-F3EA1C6B199F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntroductionToNet.Projects.WinForms", "IntroductionToNet.WinForms\IntroductionToNet.Projects.WinForms.csproj", "{2EC70916-C185-4938-9050-652A0FEED472}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{B18723B1-1B6B-4492-9FA6-51FF75757CE9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntroductionToNet.Shared.Library", "IntrodactionToNet.Shared.Library\IntroductionToNet.Shared.Library.csproj", "{947AF724-19CF-491B-8322-78FA51EE1566}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntroductionToNet.Projects.AndroidApp", "IntroductionToNet.AndroidApp\IntroductionToNet.Projects.AndroidApp.csproj", "{A8E47240-4CD0-4F89-B821-0DC615BA6697}"
+	ProjectSection(ProjectDependencies) = postProject
+		{947AF724-19CF-491B-8322-78FA51EE1566} = {947AF724-19CF-491B-8322-78FA51EE1566}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Projects", "Projects", "{9ACBC93B-BD05-4AE1-9112-7557A8FC1830}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D3A31A0D-A2DE-475E-BB88-F3EA1C6B199F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3A31A0D-A2DE-475E-BB88-F3EA1C6B199F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3A31A0D-A2DE-475E-BB88-F3EA1C6B199F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3A31A0D-A2DE-475E-BB88-F3EA1C6B199F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EC70916-C185-4938-9050-652A0FEED472}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EC70916-C185-4938-9050-652A0FEED472}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EC70916-C185-4938-9050-652A0FEED472}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EC70916-C185-4938-9050-652A0FEED472}.Release|Any CPU.Build.0 = Release|Any CPU
+		{947AF724-19CF-491B-8322-78FA51EE1566}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{947AF724-19CF-491B-8322-78FA51EE1566}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{947AF724-19CF-491B-8322-78FA51EE1566}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{947AF724-19CF-491B-8322-78FA51EE1566}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8E47240-4CD0-4F89-B821-0DC615BA6697}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8E47240-4CD0-4F89-B821-0DC615BA6697}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8E47240-4CD0-4F89-B821-0DC615BA6697}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{A8E47240-4CD0-4F89-B821-0DC615BA6697}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8E47240-4CD0-4F89-B821-0DC615BA6697}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8E47240-4CD0-4F89-B821-0DC615BA6697}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D3A31A0D-A2DE-475E-BB88-F3EA1C6B199F} = {9ACBC93B-BD05-4AE1-9112-7557A8FC1830}
+		{2EC70916-C185-4938-9050-652A0FEED472} = {9ACBC93B-BD05-4AE1-9112-7557A8FC1830}
+		{B18723B1-1B6B-4492-9FA6-51FF75757CE9} = {1DBAAAD0-C136-4F02-9F00-0619BFBE2D5B}
+		{947AF724-19CF-491B-8322-78FA51EE1566} = {B18723B1-1B6B-4492-9FA6-51FF75757CE9}
+		{A8E47240-4CD0-4F89-B821-0DC615BA6697} = {9ACBC93B-BD05-4AE1-9112-7557A8FC1830}
+		{9ACBC93B-BD05-4AE1-9112-7557A8FC1830} = {1DBAAAD0-C136-4F02-9F00-0619BFBE2D5B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0EF25A23-8669-407D-B089-432CDD67B636}
+	EndGlobalSection
+EndGlobal
