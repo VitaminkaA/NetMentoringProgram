@@ -1,87 +1,62 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using FSVisitor.Library.Entity;
 
 namespace FSVisitor.Library
 {
     public class FileSystemVisitor
     {
-        public Predicate<FileSystemInfo> Filter { get; }
+        protected IFileSystemProvider FileSystemProvider = new FileSystemProvider();
+        private readonly bool _isFilterOn;
+        public Predicate<FileSystemEntry> Filter { get; }
 
         public event Action Start, Finish;
 
-        public event Action<FileSystemEntity> FileFound, DirectoryFound, FilteredFileFound, FilteredDirectoryFound;
+        public event Action<FileSystemEntry> FileFound, DirectoryFound, FilteredFileFound, FilteredDirectoryFound;
 
         public FileSystemVisitor() { }
 
-        public FileSystemVisitor(Predicate<FileSystemInfo> filter)
-            => Filter = filter;
-
-        public IEnumerable<FileSystemInfo> Visit(DirectoryInfo dir)
+        public FileSystemVisitor(Predicate<FileSystemEntry> filter) : this()
         {
-            if (!dir.Exists)
-                throw new DirectoryNotFoundException();
+            Filter = filter 
+                     ?? throw new NullReferenceException();
+            _isFilterOn = true;
+        }
 
-            CallStartEvent();
+        public IEnumerable<FileSystemEntry> Visit(string path)
+        {
+            if (path == null)
+                throw new NullReferenceException();
 
-            var stack = new Stack<FileSystemInfo>();
-            stack.Push(dir);
-
-            while (stack.Any())
+            CallEvent(Start);
+            foreach (var entry in FileSystemProvider.EnumerateFileSystemEntries(path))
             {
-                var element = stack.Pop();
-                var elForCheck = new FileSystemEntity(element);
-                var directory = element as DirectoryInfo;
-                bool filterRes;
-                if (directory != null)
-                {
-                    filterRes = CheckElement(elForCheck, () => CallDirectoryFound(elForCheck),
-                        () => CallFilteredDirectoryFound(elForCheck));
-                    foreach (var childrenElement in directory.EnumerateFileSystemInfos().Reverse())
-                        stack.Push(childrenElement);
-                }
-                else
-                    filterRes = CheckElement(elForCheck, () => CallFileFound(elForCheck),
-                        () => CallFilteredFileFound(elForCheck));
-
-                if (elForCheck.StopSearch)
-                    break;
-                if (!filterRes || elForCheck.Skip)
+                var isDirectory = entry.Type == FileSystemEntryType.Directory;
+                CallEvent(isDirectory ? DirectoryFound : FileFound, entry);
+                if (_isFilterOn)
+                    if (FilterOut(entry))
+                        CallEvent(isDirectory ? FilteredDirectoryFound : FilteredFileFound, entry);
+                    else
+                        entry.Skip = true;
+                if (entry.Skip)
                     continue;
-                yield return elForCheck.FileSystemInfo;
+                if (entry.StopSearch)
+                    break;
+                yield return entry;
             }
-            CallFinishEvent();
+            CallEvent(Finish);
         }
 
-        private bool CheckElement(FileSystemEntity fileInfo, Action itemFound, Action filteredItemFound)
-        {
-            itemFound();
-            if (Filter == null) return true;
+        private bool FilterOut(FileSystemEntry fileInfo)
+            => Filter.Invoke(fileInfo);
 
-            var resFilter = Filter.Invoke(fileInfo.FileSystemInfo);
-            if (resFilter)
-                filteredItemFound();
+        private static void CallEvent(Action action)
+            => action?.Invoke();
 
-            return resFilter;
-        }
-
-        private void CallStartEvent()
-            => Start?.Invoke();
-
-        private void CallFinishEvent()
-            => Finish?.Invoke();
-
-        private void CallFileFound(FileSystemEntity arg)
-            => FileFound?.Invoke(arg);
-
-        private void CallDirectoryFound(FileSystemEntity arg)
-            => DirectoryFound?.Invoke(arg);
-
-        private void CallFilteredFileFound(FileSystemEntity arg)
-            => FilteredFileFound?.Invoke(arg);
-        private void CallFilteredDirectoryFound(FileSystemEntity arg)
-            => FilteredDirectoryFound?.Invoke(arg);
+        private static void CallEvent<T>(Action<T> action, T entry)
+            => action?.Invoke(entry);
     }
 }

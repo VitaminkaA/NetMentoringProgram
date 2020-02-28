@@ -1,28 +1,32 @@
 ﻿using FSVisitor.Library;
+using FSVisitor.Library.Entity;
 using System;
 using System.IO;
 using System.Linq;
 
 namespace FSVisitor.ConsoleApp
 {
+    //new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory)
+
     class Program
     {
         static void Main(string[] args)
-        {
-            var tree = SetupFileSystemVisitorWithFilter()
-                .Visit(new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory));
+        { 
+            Console.WriteLine("Enter path:");
+            var path = Console.ReadLine();
 
-            foreach (var name in tree)
-                Console.WriteLine(name.FullName);
+            var fsv = SetupFileSystemVisitorWithFilter();
+            foreach (var entry in fsv.Visit(path))
+                Console.WriteLine(entry.Name + entry.Extension);
         }
 
         private static FileSystemVisitor SetupFileSystemVisitorWithFilter()
         {
             //--- Without Filter
-            var visitor = new FileSystemVisitor();
+            //var visitor = new FileSystemVisitor();
 
             //--- With Filter
-            //var visitor = new FileSystemVisitor(x=>x.Attributes== FileAttributes.Directory);
+            var visitor = new FileSystemVisitor(x => x.Type == FileSystemEntryType.Directory);
 
             //--- With Start and Finish events
             visitor.Start += () => Console.WriteLine("Start");
@@ -31,29 +35,31 @@ namespace FSVisitor.ConsoleApp
             //---With FileFound event
             visitor.FileFound += file =>
             {
-                if (file.FileSystemInfo.Extension == ".json")
+                Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                if (file.Extension == ".key")
                     file.Skip = true;
                 else
-                    Console.Write("event FileFound:",ConsoleColor.DarkBlue);
+                    Console.WriteLine("event FileFound:");
             };
 
             //---With DirectoryFound event
             visitor.DirectoryFound += dir =>
             {
-                Console.Write("event DirectoryFound:");
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.WriteLine("event DirectoryFound:");
             };
 
-            ////---With FilteredFileFound event(filter must be on)
-            //visitor.FilteredFileFound += file =>
-            //{
-            //    Console.Write("event FilteredFileFound:");
-            //};
+            //---With FilteredFileFound event(filter must be on)
+            visitor.FilteredFileFound += file =>
+            {
+                Console.Write("event FilteredFileFound:");
+            };
 
-            ////---With FilteredDirectoryFound event(filter must be on)
-            //visitor.FilteredDirectoryFound += dir =>
-            //{
-            //    Console.Write("event FilteredDirectoryFound:");
-            //};
+            //---With FilteredDirectoryFound event(filter must be on)
+            visitor.FilteredDirectoryFound += dir =>
+            {
+                Console.Write("event FilteredDirectoryFound:");
+            };
 
             return visitor;
         }

@@ -1,37 +1,35 @@
 using FSVisitor.Library;
 using Moq;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Mime;
-using System.Security.Cryptography.X509Certificates;
+using FSVisitor.Library.Entity;
 using Xunit;
 
 namespace FSVisitor.UnitTests
 {
     public class FileSystemVisitorTests
     {
-        private readonly DirectoryInfo _directory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
-
         [Fact]
-        public void FileSystemInfoTraversalTree_NonExistentDirectory_ReturnDirectoryNotFoundException()
+        public void FileSystemInfoTraversalTree_PathIsNull_ReturnNullReferenceException()
         {
             // Arrange
-            var visitor = new FileSystemVisitor();
+            var visitor = new FakeFileSystemVisitor();
 
             // Act, Assert
-            Assert.Throws<DirectoryNotFoundException>(() =>
-                visitor.Visit(new DirectoryInfo(@"dfdfsdfdsf")).ToArray());
+            Assert.Throws<NullReferenceException>(() =>
+                visitor.Visit(null).ToArray());
         }
 
         [Fact]
         public void FileSystemInfoTraversalTree_ExistentDirectory_ReturnNotEmptyCollection()
         {
             // Arrange
-            var visitor = new FileSystemVisitor();
+            var visitor = new FakeFileSystemVisitor();
 
             // Act
-            var res = visitor.Visit(_directory).ToArray();
+            var res = visitor.Visit("").ToArray();
 
             //Assert
             Assert.NotEmpty(res);
@@ -41,27 +39,27 @@ namespace FSVisitor.UnitTests
         public void FileSystemInfoTraversalTree_WithFilter_ReturnOnlyDirectory()
         {
             // Arrange
-            var visitor = new FileSystemVisitor(x => x.Attributes == FileAttributes.Directory);
+            var visitor = new FakeFileSystemVisitor(x => x.Type == FileSystemEntryType.Directory);
 
             // Act
-            var res = visitor.Visit(_directory).ToArray();
+            var res = visitor.Visit("").ToArray();
 
             //Assert
-            Assert.All(res, (x) => Assert.IsType<DirectoryInfo>(x));
+            Assert.All(res, (x) => Assert.True(x.Type == FileSystemEntryType.Directory));
         }
 
         [Fact]
         public void FileSystemInfoTraversalTree_WithSubscriptionToStartAndFinishEvents_InvokeEvents()
         {
             // Arrange
-            var visitor = new FileSystemVisitor();
+            var visitor = new FakeFileSystemVisitor();
             var start = false;
             var finish = false;
             visitor.Start += () => start = true;
             visitor.Finish += () => finish = true;
 
             // Act
-            visitor.Visit(_directory).ToArray();
+            visitor.Visit("").ToArray();
 
             //Assert
             Assert.True(start);
@@ -72,14 +70,14 @@ namespace FSVisitor.UnitTests
         public void FileSystemInfoTraversalTree_IfFilteringIsOff_DoNotInvokeFilteredEvents()
         {
             // Arrange
-            var visitor = new FileSystemVisitor();
+            var visitor = new FakeFileSystemVisitor();
             var filteredFileFound = false;
             var filteredDirectoryFound = false;
             visitor.FilteredFileFound += (x) => filteredFileFound = true;
             visitor.FilteredDirectoryFound += (x) => filteredDirectoryFound = true;
 
             // Act
-            visitor.Visit(_directory).ToArray();
+            visitor.Visit("").ToArray();
 
             //Assert
             Assert.True(!filteredFileFound);
@@ -90,7 +88,7 @@ namespace FSVisitor.UnitTests
         public void FileSystemInfoTraversalTree_WithFilter_DoNotInvokeFilteredFileFound()
         {
             // Arrange
-            var visitor = new FileSystemVisitor(x => x.Attributes == FileAttributes.Directory);
+            var visitor = new FakeFileSystemVisitor(x => x.Type == FileSystemEntryType.Directory);
             var fileFound = false;
             var directoryFound = false;
             var filteredFileFound = false;
@@ -101,7 +99,7 @@ namespace FSVisitor.UnitTests
             visitor.FilteredDirectoryFound += (x) => filteredDirectoryFound = true;
 
             // Act
-            visitor.Visit(_directory).ToArray();
+            visitor.Visit("").ToArray();
 
             //Assert
             Assert.True(fileFound);
@@ -114,40 +112,99 @@ namespace FSVisitor.UnitTests
         public void FileSystemInfoTraversalTree_WithFileFoundEvent_SkipFilesStartsWithPrefix()
         {
             // Arrange
-            var visitor = new FileSystemVisitor();
-            var prefix = "Microsoft";
+            var visitor = new FakeFileSystemVisitor();
+            var prefix = "3";
             visitor.FileFound += (x) =>
             {
-                if (x.FileSystemInfo.Name.StartsWith(prefix))
+                if (x.Name.StartsWith(prefix))
                     x.Skip = true;
             };
 
             // Act
-            var res = visitor.Visit(_directory).ToArray();
+            var res = visitor.Visit("").ToArray();
 
             //Assert
             Assert.All(res, (x) =>
-                    Assert.True(!(x is FileInfo) || !x.Name.StartsWith(prefix)));
+                    Assert.True(x.Type != FileSystemEntryType.File || !x.Name.StartsWith(prefix)));
         }
 
         [Fact]
-        public void FileSystemInfoTraversalTree_WithDirectoryFoundEvent_SkipFilesStartsWithPrefix()
+        public void FileSystemInfoTraversalTree_WithDirectoryFoundEvent_SkipDirectoryStartsWithPrefix()
         {
             // Arrange
-            var visitor = new FileSystemVisitor();
-            var prefix = "zh";
+            var visitor = new FakeFileSystemVisitor();
+            var prefix = "1";
             visitor.DirectoryFound += (x) =>
             {
-                if (x.FileSystemInfo.Name.StartsWith(prefix))
+                if (x.Name.StartsWith(prefix))
                     x.Skip = true;
             };
 
             // Act
-            var res = visitor.Visit(_directory).ToArray();
+            var res = visitor.Visit("").ToArray();
 
             //Assert
             Assert.All(res, (x) =>
-                Assert.True(!(x is DirectoryInfo) || !x.Name.StartsWith(prefix)));
+                Assert.True(x.Type != FileSystemEntryType.Directory || !x.Name.StartsWith(prefix)));
+        }
+
+        #region Setup
+
+        public class FakeFileSystemVisitor : FileSystemVisitor
+        {
+
+            public FakeFileSystemVisitor()
+                => InitializeFileSystemProvider();
+
+            public FakeFileSystemVisitor(Predicate<FileSystemEntry> filter) : base(filter)
+                => InitializeFileSystemProvider();
+
+            private void InitializeFileSystemProvider() =>
+                FileSystemProvider = Mock.Of<IFileSystemProvider>(x
+                    => x.EnumerateFileSystemEntries(It.IsAny<string>()) == new List<FileSystemEntry>
+                    {
+                        new FileSystemEntry
+                        {
+                            Name = "1FileName1",
+                            FullName = "FileFullName1",
+                            CreationTime = DateTime.MinValue,
+                            Extension = ".fileextension1",
+                            Type = FileSystemEntryType.File
+                        },
+                        new FileSystemEntry
+                        {
+                            Name = "2FileName2",
+                            FullName = "FileFullName2",
+                            CreationTime = DateTime.MinValue,
+                            Extension = ".fileextension2",
+                            Type = FileSystemEntryType.File
+                        },
+                        new FileSystemEntry
+                        {
+                            Name = "3FileName3",
+                            FullName = "FileName3",
+                            CreationTime = DateTime.MinValue,
+                            Extension = ".fileExtension3",
+                            Type = FileSystemEntryType.File
+                        },
+                        new FileSystemEntry
+                        {
+                            Name = "1FolderName1",
+                            FullName = "FolderFullName1",
+                            CreationTime = DateTime.MinValue,
+                            Extension = ".folderExtension1",
+                            Type = FileSystemEntryType.Directory
+                        },
+                        new FileSystemEntry
+                        {
+                            Name = "2FolderName2",
+                            FullName = "FolderFullName2",
+                            CreationTime = DateTime.MinValue,
+                            Extension = ".folderExtension2",
+                            Type = FileSystemEntryType.Directory
+                        },
+                    });
         }
     }
+    #endregion
 }
