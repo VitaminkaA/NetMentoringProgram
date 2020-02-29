@@ -22,17 +22,13 @@ namespace FSVisitor.ConsoleApp
 
         private static FileSystemVisitor SetupFileSystemVisitorWithFilter()
         {
-            //--- Without Filter
             //var visitor = new FileSystemVisitor();
 
-            //--- With Filter
             var visitor = new FileSystemVisitor(x => x.Type == FileSystemEntryType.Directory);
 
-            //--- With Start and Finish events
             visitor.Start += () => Console.WriteLine("Start");
             visitor.Finish += () => Console.WriteLine("Finish");
 
-            //---With FileFound event
             visitor.FileFound += file =>
             {
                 Console.ForegroundColor = ConsoleColor.DarkMagenta;
@@ -42,20 +38,17 @@ namespace FSVisitor.ConsoleApp
                     Console.WriteLine("event FileFound:");
             };
 
-            //---With DirectoryFound event
             visitor.DirectoryFound += dir =>
             {
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
                 Console.WriteLine("event DirectoryFound:");
             };
 
-            //---With FilteredFileFound event(filter must be on)
             visitor.FilteredFileFound += file =>
             {
                 Console.Write("event FilteredFileFound:");
             };
 
-            //---With FilteredDirectoryFound event(filter must be on)
             visitor.FilteredDirectoryFound += dir =>
             {
                 Console.Write("event FilteredDirectoryFound:");

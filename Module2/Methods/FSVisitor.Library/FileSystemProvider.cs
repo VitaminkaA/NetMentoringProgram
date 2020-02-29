@@ -2,17 +2,16 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace FSVisitor.Library
 {
     public class FileSystemProvider : IFileSystemProvider
     {
-        private readonly string _searchPattern = "*";
+        private const string _searchPattern = "*";
         public IEnumerable<FileSystemEntry> EnumerateFileSystemEntries(string path)
         {
             var dir = new DirectoryInfo(path
-                                        ?? throw new NullReferenceException());
+                                        ?? throw new ArgumentNullException());
 
             if (!dir.Exists)
                 throw new DirectoryNotFoundException();

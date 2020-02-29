@@ -17,7 +17,7 @@ namespace FSVisitor.UnitTests
             var visitor = new FileSystemProvider();
 
             // Act, Assert
-            Assert.Throws<NullReferenceException>(() =>
+            Assert.Throws<ArgumentNullException>(() =>
                 visitor.EnumerateFileSystemEntries(null).ToArray());
         }
 

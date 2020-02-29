@@ -80,8 +80,8 @@ namespace FSVisitor.UnitTests
             visitor.Visit("").ToArray();
 
             //Assert
-            Assert.True(!filteredFileFound);
-            Assert.True(!filteredDirectoryFound);
+            Assert.False(filteredFileFound);
+            Assert.False(filteredDirectoryFound);
         }
 
         [Fact]
@@ -104,7 +104,7 @@ namespace FSVisitor.UnitTests
             //Assert
             Assert.True(fileFound);
             Assert.True(directoryFound);
-            Assert.True(!filteredFileFound);
+            Assert.False(filteredFileFound);
             Assert.True(filteredDirectoryFound);
         }
 
