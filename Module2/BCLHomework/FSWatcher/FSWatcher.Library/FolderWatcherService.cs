@@ -48,7 +48,7 @@ namespace FSWatcher.Library
             if (_folder.IncludeMoveDate)
                 newFileInfo.Name = $"({DateTimeOffset.Now.Date.ToShortDateString().Replace('/', '-')}){ newFileInfo.Name}";
             if (_folder.IncludeNumbering)
-                newFileInfo.Name = $"({_folder.Count++}){newFileInfo.Name}";
+                newFileInfo.Name = $"({_folder.Counter++}){newFileInfo.Name}";
             _fileTransferService.MoveFolder(fullPath, Path.Combine(destinationFolder, newFileInfo.Name));
 
             CallEvent(SuccessfulFileTransfer);

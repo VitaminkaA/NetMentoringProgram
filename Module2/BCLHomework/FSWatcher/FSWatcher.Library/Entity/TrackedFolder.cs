@@ -12,6 +12,6 @@ namespace FSWatcher.Library.Entity
         public bool IncludeNumbering { get; set; }
         public bool IncludeMoveDate { get; set; }
         public Dictionary<Regex, string> Templates { get; set; }
-        public int Count { get; set; }
+        public int Counter { get; set; }
     }
 }
