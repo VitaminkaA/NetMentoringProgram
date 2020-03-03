@@ -33,8 +33,7 @@ namespace FSWatcher.ConsoleApp
             var watchers = new List<FolderWatcherService>();
             foreach (var folder in folders)
             {
-                var tFolder = mapper.Map<FoldersSettings, TrackedFolder>(folder);
-                var wS = new FolderWatcherService(tFolder);
+                var wS = new FolderWatcherService(mapper.Map<FoldersSettings, TrackedFolder>(folder));
                 watchers.Add(wS);
                 wS.NewFileFound += (newFileInfo) => Console.WriteLine(Messages.NewFileFound, newFileInfo.Name, newFileInfo.DateTime);
                 wS.RuleFound += () => Console.WriteLine(Messages.RuleFound);
