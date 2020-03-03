@@ -21,7 +21,7 @@ namespace FSWatcher.ConsoleApp
 
         static void Main(string[] args)
         {
-            Console.CancelKeyPress += Cansel;
+            Console.CancelKeyPress += Cancel;
             
             var config = GetConfiguration();
             var customSettings = config.Configure<CustomSettings>("CustomConfiguration");
@@ -65,7 +65,7 @@ namespace FSWatcher.ConsoleApp
             => new MapperConfiguration(mc => { mc.AddProfile(new TrackedFolderProfile()); })
                 .CreateMapper();
 
-        private static void Cansel(object sender, ConsoleCancelEventArgs e)
+        private static void Cancel(object sender, ConsoleCancelEventArgs e)
         {
             e.Cancel = true;
             isRunning = false;
