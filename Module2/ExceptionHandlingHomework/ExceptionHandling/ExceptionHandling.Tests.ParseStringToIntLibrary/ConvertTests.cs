@@ -70,6 +70,19 @@ namespace ExceptionHandling.Tests.ParseStringToIntLibrary
         }
 
         [Fact]
+        public void StringToInt_Negative123_Negative123()
+        {
+            // Arrange
+            const int exp = -123;
+
+            // Act
+            var res = Converter.StringToInt($"{exp}");
+
+            // Assert
+            Assert.True(res == exp);
+        }
+
+        [Fact]
         public void StringToInt_Negative0_ArgumentException()
         {
             // Arrange, Act, Assert
