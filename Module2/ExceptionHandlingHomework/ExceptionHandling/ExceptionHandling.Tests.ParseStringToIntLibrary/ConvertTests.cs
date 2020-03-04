@@ -70,10 +70,48 @@ namespace ExceptionHandling.Tests.ParseStringToIntLibrary
         }
 
         [Fact]
-        public void StringToInt_Negative123_Negative123()
+        public void StringToInt_SpaceNegative123Space_Negative123()
         {
             // Arrange
             const int exp = -123;
+
+            // Act
+            var res = Converter.StringToInt($"   {exp} ");
+
+            // Assert
+            Assert.True(res == exp);
+        }
+        [Fact]
+        public void StringToInt_Space0Space_0()
+        {
+            // Arrange
+            const int exp = 0;
+
+            // Act
+            var res = Converter.StringToInt($" 0 ");
+
+            // Assert
+            Assert.True(res == exp);
+        }
+
+        [Fact]
+        public void StringToInt_Negative0_0()
+        {
+            // Arrange
+            const int exp = 0;
+
+            // Act
+            var res = Converter.StringToInt($"-0");
+
+            // Assert
+            Assert.True(res == exp);
+        }
+
+        [Fact]
+        public void StringToInt_012345_123456()
+        {
+            // Arrange
+            const int exp = 0123456;
 
             // Act
             var res = Converter.StringToInt($"{exp}");
@@ -83,19 +121,19 @@ namespace ExceptionHandling.Tests.ParseStringToIntLibrary
         }
 
         [Fact]
-        public void StringToInt_Negative0_ArgumentException()
+        public void StringToInt_12Space3_ArgumentException()
         {
             // Arrange, Act, Assert
-            var exception = Assert.Throws<ArgumentException>(() => Converter.StringToInt("-0"));
-            Assert.Equal("Number cannot start from zero.", exception.Message);
+            var exception = Assert.Throws<ArgumentException>(() => Converter.StringToInt("12 3"));
+            Assert.Equal("Character is not a number", exception.Message);
         }
 
         [Fact]
-        public void StringToInt_012345_ArgumentException()
+        public void StringToInt_12SomeSpace3_ArgumentException()
         {
             // Arrange, Act, Assert
-            var exception = Assert.Throws<ArgumentException>(() => Converter.StringToInt("012345"));
-            Assert.Equal("Number cannot start from zero.", exception.Message);
+            var exception = Assert.Throws<ArgumentException>(() => Converter.StringToInt("12     3"));
+            Assert.Equal("Character is not a number", exception.Message);
         }
 
         [Fact]

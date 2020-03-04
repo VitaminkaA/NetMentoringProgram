@@ -10,20 +10,26 @@ namespace ExceptionHandling.ParseStringToIntLibrary
                 throw new ArgumentException("The entered string cannot be null, empty or white space.");
 
             var isNegative = false;
-            var length = str.Length;
+            var number = 0;
             var charEnumerator = str.GetEnumerator();
             charEnumerator.MoveNext();
+
+            while (char.IsWhiteSpace(charEnumerator.Current) && charEnumerator.MoveNext()) ;
 
             if (charEnumerator.Current == '-')
             {
                 isNegative = true;
                 charEnumerator.MoveNext();
             }
-            if (charEnumerator.Current == '0' && length > 1)
-                throw new ArgumentException("Number cannot start from zero.");
 
-            var number = CharToInt(charEnumerator.Current);
-            while (charEnumerator.MoveNext())
+            while (charEnumerator.Current == '0')
+                if (!charEnumerator.MoveNext())
+                    return number;
+
+            if (!char.IsWhiteSpace(charEnumerator.Current))
+                number = CharToInt(charEnumerator.Current);
+
+            while (charEnumerator.MoveNext() && !char.IsWhiteSpace(charEnumerator.Current))
             {
                 try
                 {
@@ -34,6 +40,10 @@ namespace ExceptionHandling.ParseStringToIntLibrary
                     throw new ArgumentException("Value was either too large or too small for an Int32.");
                 }
             }
+            while (charEnumerator.MoveNext())
+                if (!char.IsWhiteSpace(charEnumerator.Current))
+                    throw new ArgumentException("Character is not a number");
+
             charEnumerator.Dispose();
             return isNegative ? -number : number;
         }
