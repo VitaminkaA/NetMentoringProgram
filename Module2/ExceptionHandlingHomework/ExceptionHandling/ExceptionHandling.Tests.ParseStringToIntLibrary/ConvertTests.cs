@@ -31,7 +31,7 @@ namespace ExceptionHandling.Tests.ParseStringToIntLibrary
         }
 
         [Fact]
-        public void StringToInt_3_3()
+        public void StringToInt_Value_ConvertedSuccess()
         {
             // Arrange
             const int exp = 3;
@@ -44,7 +44,7 @@ namespace ExceptionHandling.Tests.ParseStringToIntLibrary
         }
 
         [Fact]
-        public void StringToInt_Negative4545_Negative4545()
+        public void StringToInt_NegativeValue_ConvertedSuccess()
         {
             // Arrange
             const int exp = -4545;
@@ -57,7 +57,7 @@ namespace ExceptionHandling.Tests.ParseStringToIntLibrary
         }
 
         [Fact]
-        public void StringToInt_0_0()
+        public void StringToInt_0_ConvertedSuccess()
         {
             // Arrange
             const int exp = 0;
@@ -70,7 +70,7 @@ namespace ExceptionHandling.Tests.ParseStringToIntLibrary
         }
 
         [Fact]
-        public void StringToInt_SpaceNegative123Space_Negative123()
+        public void StringToInt_ValueWithSpacesAtTheBeginningAndEnd_ConvertedSuccess()
         {
             // Arrange
             const int exp = -123;
@@ -82,7 +82,7 @@ namespace ExceptionHandling.Tests.ParseStringToIntLibrary
             Assert.True(res == exp);
         }
         [Fact]
-        public void StringToInt_Space0Space_0()
+        public void StringToInt_SpaceValueSpace_ConvertedSuccess()
         {
             // Arrange
             const int exp = 0;
@@ -95,7 +95,7 @@ namespace ExceptionHandling.Tests.ParseStringToIntLibrary
         }
 
         [Fact]
-        public void StringToInt_Negative0_0()
+        public void StringToInt_Negative0_ConvertedSuccess()
         {
             // Arrange
             const int exp = 0;
@@ -108,7 +108,7 @@ namespace ExceptionHandling.Tests.ParseStringToIntLibrary
         }
 
         [Fact]
-        public void StringToInt_012345_123456()
+        public void StringToInt_NumberStartingFromZero_ConvertedSuccess()
         {
             // Arrange
             const int exp = 0123456;
@@ -121,7 +121,7 @@ namespace ExceptionHandling.Tests.ParseStringToIntLibrary
         }
 
         [Fact]
-        public void StringToInt_12Space3_ArgumentException()
+        public void StringToInt_SpaceInsideNumber_ArgumentException()
         {
             // Arrange, Act, Assert
             var exception = Assert.Throws<ArgumentException>(() => Converter.StringToInt("12 3"));
@@ -137,7 +137,7 @@ namespace ExceptionHandling.Tests.ParseStringToIntLibrary
         }
 
         [Fact]
-        public void StringToInt_9898989898989898989_ArgumentException()
+        public void StringToInt_OutOfRange_ArgumentException()
         {
             // Arrange, Act, Assert
             var exception = Assert.Throws<ArgumentException>(()
