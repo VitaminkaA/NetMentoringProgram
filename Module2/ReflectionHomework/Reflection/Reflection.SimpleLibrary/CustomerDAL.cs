@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Reflection.Container.Attributes;
+﻿using Reflection.Container.Attributes;
 
-namespace Reflection.SimpleLibrary
+namespace Reflection.SampleLibrary
 {
     [Export(typeof(ICustomerDAL))]
     public class CustomerDAL : ICustomerDAL
     {
-        public string GetCustomerName()
-        {
-            return "Customer";
-        }
+        public string GetCustomerName() => "Customer";
     }
 }

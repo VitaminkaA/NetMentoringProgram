@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Reflection.SimpleLibrary
+﻿
+namespace Reflection.SampleLibrary
 {
     public interface ICustomerDAL
     {

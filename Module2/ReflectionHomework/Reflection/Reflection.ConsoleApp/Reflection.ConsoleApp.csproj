@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Reflection.Container\Reflection.Container.csproj" />
-    <ProjectReference Include="..\Reflection.SimpleLibrary\Reflection.SimpleLibrary.csproj" />
+    <ProjectReference Include="..\Reflection.SimpleLibrary\Reflection.SampleLibrary.csproj" />
   </ItemGroup>
 
 </Project>

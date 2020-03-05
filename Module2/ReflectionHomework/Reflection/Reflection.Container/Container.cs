@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
-using System.Text;
 using Reflection.Container.Attributes;
 using Reflection.Container.Services;
 
@@ -9,72 +9,93 @@ namespace Reflection.Container
 {
     public class Container
     {
-        private readonly Dictionary<Type, ICreator> _container = new Dictionary<Type, ICreator>();
+        private readonly Dictionary<Type, Instance> _container = new Dictionary<Type, Instance>();
 
-        public void AddType(Type type)
+        public void AddAssembly(Assembly assembly)
         {
-            if (type == null)
-                throw new ArgumentException();
+            if (assembly == null)
+                throw new ArgumentNullException();
 
-            _container.Add(type, GetCreator(type));
+            foreach (var type in assembly.DefinedTypes)
+                AddType(type);
         }
 
-        //public void AddType(Type type1, Type type2)
-        //{
+        public void AddType(Type type)
+            => AddType(type, type);
 
-        //    _container.Add(type1, type2);
-        //}
+        public void AddType(Type type1, Type type2)
+        {
+            if (type1 == null || type2 == null)
+                throw new ArgumentNullException();
 
-        //public object CreateInstance(Type type)
-        //{
-        //    if (type == null)
-        //        throw new ArgumentNullException(nameof(type));
+            var exportAttribute = type1.GetCustomAttribute<ExportAttribute>();
+            var constructorAttribute = type1.GetCustomAttribute<ImportConstructorAttribute>() != null;
+            var importAttribute = type1.GetProperties().Any(x => x.GetCustomAttribute<ImportAttribute>() != null);
 
-        //    if (_container.TryGetValue(type, out var createdObject))
-        //        return createdObject.CreateInstance();
-        //    else
-        //        throw new Exception();
-        //}
+            if (exportAttribute != null)
+                type2 = exportAttribute.Type ?? type2;
 
-        //public T CreateInstance<T>()
-        //{
-        //    return (T)CreateInstance(typeof(T));
-        //}
+            if (exportAttribute == null && !constructorAttribute && !importAttribute)
+                return;
 
-        private ICreator GetCreator(Type type)
+            if (_container.ContainsKey(type2))
+                throw new Exception($"{type2} is already registered");
+
+            Instance creator = null;
+            if (constructorAttribute && importAttribute)
+                throw new Exception("Only a constructor attribute or only a property attribute can be set.");
+            if (constructorAttribute)
+                creator = new InstanceWithConstructor(type1);
+            if (importAttribute)
+                creator = new InstanceWithProperties(type1);
+            if (exportAttribute != null)
+                creator = new Instance(type1);
+
+            _container.Add(type2, creator);
+        }
+
+        public object CreateInstance(Type type)
         {
             if (type == null)
                 throw new ArgumentNullException();
 
-            var isConstructorAttribute = false;
-            var isImportAttribute = false;
-            var isExportAttribute = false;
+            _container.TryGetValue(type, out var creator);
 
-            foreach (var attribute in type.GetCustomAttributes())
-                switch (attribute)
-                {
-                    case ImportConstructorAttribute _:
-                        isConstructorAttribute = true;
-                        break;
-                    case ImportAttribute _:
-                        isImportAttribute = true;
-                        break;
-                    case ExportAttribute _:
-                        isExportAttribute = true;
-                        break;
-                }
+            if (creator == null)
+                throw new Exception($"Type {type} isn't registered in container.");
 
-            if (isConstructorAttribute && isImportAttribute)
-                throw new Exception();
+            return CreateInstance(creator);
+        }
 
-            ICreator creator;
+        public T CreateInstance<T>() where T : class
+            => (T)CreateInstance(typeof(T));
 
-            if (isConstructorAttribute)
-                creator = new ConstructorCreator(type);
+        private object CreateInstance(Instance creator)
+        {
+            if (creator == null)
+                throw new ArgumentNullException();
 
-
-
-            return null;
+            switch (creator)
+            {
+                case InstanceWithConstructor constructorCreator:
+                    {
+                        var objForType = constructorCreator.ConstructorParameterType
+                            .Select(x => CreateInstance(x.ParameterType)).ToArray();
+                        return Activator.CreateInstance(creator.Type, objForType);
+                    }
+                case InstanceWithProperties propertiesCreator:
+                    {
+                        var objForType = Activator.CreateInstance(creator.Type);
+                        foreach (var prop in propertiesCreator.PropertiesType)
+                            prop.SetValue(objForType, CreateInstance(prop.PropertyType));
+                        return objForType;
+                    }
+                case Instance c:
+                    return Activator.CreateInstance(creator.Type);
+                default:
+                    throw new Exception();
+            }
         }
     }
+
 }

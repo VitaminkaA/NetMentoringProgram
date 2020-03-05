@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Reflection.Container.Attributes;
+﻿using Reflection.Container.Attributes;
 
-namespace Reflection.SimpleLibrary
+namespace Reflection.SampleLibrary
 {
     public class CustomerBLL_PropertyDependency
     {

@@ -1,13 +1,17 @@
 ﻿using Reflection.Container.Attributes;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Reflection.SimpleLibrary
+namespace Reflection.SampleLibrary
 {
     [ImportConstructor]
     public class CustomerBLL_ConstructorDependency
     {
-        public CustomerBLL_ConstructorDependency(ICustomerDAL dal, Logger logger) { }
+        public readonly ICustomerDAL CustomerDAL;
+        public readonly Logger Logger;
+
+        public CustomerBLL_ConstructorDependency(ICustomerDAL dal, Logger logger)
+        {
+            CustomerDAL = dal;
+            Logger = logger;
+        }
     }
 }

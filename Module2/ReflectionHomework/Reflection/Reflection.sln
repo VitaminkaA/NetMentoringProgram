@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reflection.ConsoleApp", "Re
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reflection.Container", "Reflection.Container\Reflection.Container.csproj", "{0C8A5538-0B81-4528-96B8-72FF95A91BBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reflection.SimpleLibrary", "Reflection.SimpleLibrary\Reflection.SimpleLibrary.csproj", "{C2B3F03E-64B4-401B-982A-7CA98EDD0A58}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reflection.SampleLibrary", "Reflection.SimpleLibrary\Reflection.SampleLibrary.csproj", "{C2B3F03E-64B4-401B-982A-7CA98EDD0A58}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
