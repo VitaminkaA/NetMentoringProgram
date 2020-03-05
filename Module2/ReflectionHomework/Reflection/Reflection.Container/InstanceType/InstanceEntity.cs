@@ -2,11 +2,11 @@
 
 namespace Reflection.Container.Services
 {
-    public class Instance
+    public class InstanceEntity
     {
         public Type Type { get; }
 
-        public Instance(Type type) 
+        public InstanceEntity(Type type) 
             => Type = type ?? throw new ArgumentNullException();
     }
 }

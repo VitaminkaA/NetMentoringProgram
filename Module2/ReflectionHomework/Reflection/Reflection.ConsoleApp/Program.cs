@@ -23,6 +23,8 @@ namespace Reflection.ConsoleApp
             Console.WriteLine($"iCustomerDAL: {iCustomerDAL1.GetCustomerName()}");
             var customerDAL1 = container1.CreateInstance<ICustomerDAL>();
             Console.WriteLine($"CustomerDAL: {customerDAL1.GetCustomerName()}");
+            var customerDALWithDependency1 = container1.CreateInstance<ICustomerDALWithDependency>();
+            Console.WriteLine($"CustomerDALWithDependency: {customerDALWithDependency1.GetCustomerName()}");
 
             Console.WriteLine();
             Console.WriteLine("Add types through AddType:");
@@ -32,6 +34,7 @@ namespace Reflection.ConsoleApp
             container.AddType(typeof(CustomerBLL_PropertyDependency));
             container.AddType(typeof(Logger));
             container.AddType(typeof(CustomerDAL), typeof(ICustomerDAL));
+            container.AddType(typeof(CustomDALWithDependency),typeof(ICustomerDALWithDependency));
             
             var customerBLLConstructorDependency =
                 (CustomerBLL_ConstructorDependency)container.CreateInstance(typeof(CustomerBLL_ConstructorDependency));
@@ -43,6 +46,8 @@ namespace Reflection.ConsoleApp
             Console.WriteLine($"iCustomerDAL: {iCustomerDAL.GetCustomerName()}");
             var customerDAL = container.CreateInstance<ICustomerDAL>();
             Console.WriteLine($"CustomerDAL: {customerDAL.GetCustomerName()}");
+            var customerDALWithDependency = container.CreateInstance<ICustomerDALWithDependency>();
+            Console.WriteLine($"CustomerDALWithDependency: {customerDAL.GetCustomerName()}");
         }
     }
 }

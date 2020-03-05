@@ -8,11 +8,11 @@ using Reflection.Container.Attributes;
 
 namespace Reflection.Container.Services
 {
-    public class InstanceWithProperties : Instance
+    public class InstanceEntityWithProperties : InstanceEntity
     {
         public readonly IEnumerable<PropertyInfo> PropertiesType;
 
-        public InstanceWithProperties(Type type) : base(type)
+        public InstanceEntityWithProperties(Type type) : base(type)
         {
             PropertiesType = type.GetProperties()
                 .Where(x => x.GetCustomAttribute<ImportAttribute>() != null);

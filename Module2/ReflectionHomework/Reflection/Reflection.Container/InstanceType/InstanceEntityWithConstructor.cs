@@ -6,11 +6,11 @@ using System.Text;
 
 namespace Reflection.Container.Services
 {
-    internal class InstanceWithConstructor : Instance
+    internal class InstanceEntityWithConstructor : InstanceEntity
     {
         public readonly IEnumerable<ParameterInfo> ConstructorParameterType;
 
-        public InstanceWithConstructor(Type type) : base(type)
+        public InstanceEntityWithConstructor(Type type) : base(type)
         {
             var constructors = type.GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.CreateInstance);
 
