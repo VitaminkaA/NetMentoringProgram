@@ -4,21 +4,21 @@
 --включительно и которые доставлены с ShipVia >= 2. 
 --Запрос должен возвращать только колонки OrderID, ShippedDate и ShipVia.
 
-select o.OrderID, o.ShippedDate, o.ShipVia
-from [Northwind].dbo.Orders as o
-where o.ShippedDate>='1998-5-6' and o.ShipVia>=2
+select ord.OrderID, ord.ShippedDate, ord.ShipVia
+from [Northwind].dbo.Orders ord
+where ord.ShippedDate>='1998-5-6' and ord.ShipVia>=2
 
 --Написать запрос, который выводит только недоставленные заказы из таблицы Orders. 
 --В результатах запроса возвращать для колонки ShippedDate вместо значений NULL строку ‘Not Shipped’ 
 --(использовать системную функцию CASЕ). Запрос должен возвращать только колонки OrderID и ShippedDate.
 
-select o.OrderID, ShippedDate = 'Not Shipped'
-from [Northwind].dbo.Orders as o
-where o.ShippedDate is null
+select ord.OrderID, ShippedDate = 'Not Shipped'
+from [Northwind].dbo.Orders ord
+where ord.ShippedDate is null
 
-select o.OrderID, case when o.ShippedDate is null then 'Not Shipped' end ShippedDate
-from [Northwind].dbo.Orders as o
-where o.ShippedDate is null
+select ord.OrderID, case when ord.ShippedDate is null then 'Not Shipped' end ShippedDate
+from [Northwind].dbo.Orders ord
+where ord.ShippedDate is null
 
 --Выбрать в таблице Orders заказы, которые были доставлены после 6 мая 1998 года (ShippedDate) не включая 
 --эту дату или которые еще не доставлены. В запросе должны возвращаться только колонки OrderID 
@@ -26,10 +26,10 @@ where o.ShippedDate is null
 --возвращать для колонки ShippedDate вместо значений NULL строку ‘Not Shipped’, для остальных значений 
 --возвращать дату в формате по умолчанию.
 
-select o.OrderID as 'Order Number', 
+select 'Order Number'=ord.OrderID, 
 	case 
-		when o.ShippedDate is null then 'Not Shipped'
-		else cast(cast(o.ShippedDate as date) as char(15))
+		when ord.ShippedDate is null then 'Not Shipped'
+		else cast(cast(ord.ShippedDate as date) as char(15))
 	end ShippedDate
-from [Northwind].dbo.Orders as o
-where o.ShippedDate>'1998-5-6' or o.ShippedDate is null
+from [Northwind].dbo.Orders ord
+where ord.ShippedDate>'1998-5-6' or ord.ShippedDate is null

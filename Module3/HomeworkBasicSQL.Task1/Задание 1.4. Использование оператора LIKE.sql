@@ -4,6 +4,6 @@
 --'chocolade'. Известно, что в подстроке 'chocolade' может быть изменена одна буква 'c' в 
 --середине - найти все продукты, которые удовлетворяют этому условию.
 
-select p.ProductName
-from [Northwind].dbo.Products as p
-where p.ProductName like '%cho_olade%'
+select prod.ProductName
+from [Northwind].dbo.Products as prod
+where prod.ProductName like '%cho_olade%'

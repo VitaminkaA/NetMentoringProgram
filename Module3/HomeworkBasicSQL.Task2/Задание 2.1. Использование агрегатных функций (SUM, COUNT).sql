@@ -4,21 +4,21 @@
 --товаров и скидок по ним. –езультатом запроса должна быть одна запись с одной колонкой с 
 --названием колонки 'Totals'.
 
-select sum((oD.UnitPrice-od.Discount)*od.Quantity)as 'Totals'
+select 'Totals'=sum((oD.UnitPrice-od.Discount)*od.Quantity)
 from [Northwind].dbo.[Order Details] as oD
 
 --2. ѕо таблице Orders найти количество заказов, которые еще не были доставлены (т.е. в 
 --колонке ShippedDate нет значени€ даты доставки). »спользовать при этом запросе только 
 --оператор COUNT. Ќе использовать предложени€ WHERE и GROUP.
 
-select count(case when o.ShippedDate is null then 1
+select count(case when ord.ShippedDate is null then 1
 		     end)
-from [Northwind].dbo.Orders as o
+from [Northwind].dbo.Orders as ord
 
 --3. ѕо таблице Orders найти количество различных покупателей (CustomerID), сделавших заказы. 
 --»спользовать функцию COUNT и не использовать предложени€ WHERE и GROUP.
 
-select count(distinct(o.CustomerID))
-from [Northwind].dbo.Orders as o
+select count(distinct(ord.CustomerID))
+from [Northwind].dbo.Orders as ord
 
 

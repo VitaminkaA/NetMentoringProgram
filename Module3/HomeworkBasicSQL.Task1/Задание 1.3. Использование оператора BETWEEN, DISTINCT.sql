@@ -6,7 +6,7 @@
 --колонку OrderID.
 
 select distinct(od.OrderID)
-from [Northwind].dbo.[Order Details] as oD
+from [Northwind].dbo.[Order Details] oD
 where oD.Quantity between 3 and 10
 
 --2. Выбрать всех заказчиков из таблицы Customers, у которых название страны начинается на 
@@ -14,14 +14,14 @@ where oD.Quantity between 3 and 10
 --запроса попадает Germany. Запрос должен возвращать только колонки CustomerID и Country и 
 --отсортирован по Country.
 
-select c.CustomerID, c.Country
-from [Northwind].dbo.Customers as c
-where c.Country between 'b' and 'h'
-order by c.Country
+select cust.CustomerID, cust.Country
+from [Northwind].dbo.Customers cust
+where cust.Country between 'b' and 'h'
+order by cust.Country
 
 --3. Выбрать всех заказчиков из таблицы Customers, у которых название страны начинается на 
 --буквы из диапазона b и g, не используя оператор BETWEEN.
 
-select c.*
-from [Northwind].dbo.Customers as c
-where c.Country like '[b-g]%'
+select cust.*
+from [Northwind].dbo.Customers cust
+where cust.Country like '[b-g]%'
