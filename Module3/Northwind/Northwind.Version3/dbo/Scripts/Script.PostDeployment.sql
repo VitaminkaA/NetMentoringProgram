@@ -11,3 +11,4 @@ Post-Deployment Script Template
 */
 
 :r .\InsertScripts\Insert.sql
+:r .\Renaming.sql
