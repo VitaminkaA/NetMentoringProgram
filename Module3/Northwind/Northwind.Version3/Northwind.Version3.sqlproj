@@ -74,7 +74,7 @@
     <Build Include="dbo\Tables\Order Details.sql" />
     <Build Include="dbo\Tables\Orders.sql" />
     <Build Include="dbo\Tables\Products.sql" />
-    <Build Include="dbo\Tables\Regions.sql" />
+    <Build Include="dbo\Tables\Region.sql" />
     <Build Include="dbo\Tables\Shippers.sql" />
     <Build Include="dbo\Tables\Suppliers.sql" />
     <Build Include="dbo\Tables\Territories.sql" />
@@ -105,5 +105,8 @@
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="dbo\Scripts\Script.PostDeployment.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="dbo\Scripts\Renaming.sql" />
   </ItemGroup>
 </Project>
