@@ -27,6 +27,9 @@ namespace Northwind.DAL
 
         public void AddOrder(Order order)
         {
+            if (order == null)
+                throw new ArgumentNullException();
+
             using var connection = _providerFactory.CreateConnection();
             connection.ConnectionString = _connectionString;
             connection.Open();
@@ -53,11 +56,11 @@ namespace Northwind.DAL
             {
                 command.CreateParameter($"@{nameof(order.CustomerID)}", order.CustomerID),
                 command.CreateParameter($"@{nameof(order.EmployeeID)}", order.EmployeeID),
-                command.CreateParameter($"@{nameof(order.OrderDate)}", order.OrderDate.HasValue 
+                command.CreateParameter($"@{nameof(order.OrderDate)}", order.OrderDate.HasValue
                     ? $"{order.OrderDate.Value:yyyy - MM - dd HH: mm:ss}" : null),
-                command.CreateParameter($"@{nameof(order.RequiredDate)}", order.RequiredDate.HasValue 
+                command.CreateParameter($"@{nameof(order.RequiredDate)}", order.RequiredDate.HasValue
                     ? $"{order.RequiredDate.Value:yyyy - MM - dd HH: mm:ss}" : null),
-                command.CreateParameter($"@{nameof(order.ShippedDate)}", order.ShippedDate.HasValue 
+                command.CreateParameter($"@{nameof(order.ShippedDate)}", order.ShippedDate.HasValue
                     ? $"{order.ShippedDate.Value:yyyy - MM - dd HH: mm:ss}" : null),
                 command.CreateParameter($"@{nameof(order.ShipVia)}", order.ShipVia),
                 command.CreateParameter($"@{nameof(order.Freight)}", order.Freight),
