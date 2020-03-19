@@ -4,6 +4,8 @@ using Northwind.DAL.Entities;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.Linq;
+using Northwind.DAL.Exceptions;
 using Northwind.DAL.Mapping;
 using Northwind.DAL.Extensions;
 
@@ -13,7 +15,7 @@ namespace Northwind.DAL
     {
         private readonly DbProviderFactory _providerFactory;
         private readonly string _connectionString;
-        private static readonly Mapper _mapper = new Mapper();
+        private static readonly IMapper _mapper = new Mapper();
 
         public OrderRepository(string provider, string connectionString)
         {
@@ -30,56 +32,82 @@ namespace Northwind.DAL
             if (order == null)
                 throw new ArgumentNullException();
 
-            using var connection = _providerFactory.CreateConnection();
-            connection.ConnectionString = _connectionString;
-            connection.Open();
+            var columnsDict = GetOrdersDictionary(order);
+            var commandText = "INSERT INTO [dbo].[Orders] " +
+                              $"VALUES(@{string.Join(",@", columnsDict.Keys)})";
 
-            var commandText =
-                "INSERT INTO [dbo].[Orders] VALUES(" +
-                $"@{nameof(order.CustomerID)}," +
-                $"@{nameof(order.EmployeeID)}," +
-                $"@{nameof(order.OrderDate)}," +
-                $"@{nameof(order.RequiredDate)}," +
-                $"@{nameof(order.ShippedDate)}," +
-                $"@{nameof(order.ShipVia)}," +
-                $"@{nameof(order.Freight)}," +
-                $"@{nameof(order.ShipName)}," +
-                $"@{nameof(order.ShipAddress)}," +
-                $"@{nameof(order.ShipCity)}," +
-                $"@{nameof(order.ShipRegion)}," +
-                $"@{nameof(order.ShipPostalCode)}," +
-                $"@{nameof(order.ShipCountry)}"
-                + ")";
-
-            using var command = connection.CreateCommand();
-            command.Parameters.AddRange(new[]
-            {
-                command.CreateParameter($"@{nameof(order.CustomerID)}", order.CustomerID),
-                command.CreateParameter($"@{nameof(order.EmployeeID)}", order.EmployeeID),
-                command.CreateParameter($"@{nameof(order.OrderDate)}", order.OrderDate.HasValue
-                    ? $"{order.OrderDate.Value:yyyy - MM - dd HH: mm:ss}" : null),
-                command.CreateParameter($"@{nameof(order.RequiredDate)}", order.RequiredDate.HasValue
-                    ? $"{order.RequiredDate.Value:yyyy - MM - dd HH: mm:ss}" : null),
-                command.CreateParameter($"@{nameof(order.ShippedDate)}", order.ShippedDate.HasValue
-                    ? $"{order.ShippedDate.Value:yyyy - MM - dd HH: mm:ss}" : null),
-                command.CreateParameter($"@{nameof(order.ShipVia)}", order.ShipVia),
-                command.CreateParameter($"@{nameof(order.Freight)}", order.Freight),
-                command.CreateParameter($"@{nameof(order.ShipName)}", order.ShipName),
-                command.CreateParameter($"@{nameof(order.ShipAddress)}", order.ShipAddress),
-                command.CreateParameter($"@{nameof(order.ShipCity)}", order.ShipCity),
-                command.CreateParameter($"@{nameof(order.ShipRegion)}", order.ShipRegion),
-                command.CreateParameter($"@{nameof(order.ShipPostalCode)}", order.ShipPostalCode),
-                command.CreateParameter($"@{nameof(order.ShipCountry)}", order.ShipCountry)
-            });
-
-            command.CommandText = commandText;
-            command.ExecuteNonQuery();
+            ExecuteNonQuery(commandText, columnsDict);
         }
+
+        public void SetInWorkStatus(int id)
+        {
+            var ord = GetOrderById(id);
+
+            if (ord.Status != OrderStatus.New)
+                throw new RepositoryException("Only in the order with the NewStatus can the status be changed to InWork.");
+
+            ord.OrderDate = DateTime.Now;
+            Update(ord);
+        }
+
+        public void SetCompletedStatus(int id)
+        {
+            var ord = GetOrderById(id);
+
+            if (ord.Status != OrderStatus.InWork)
+                throw new RepositoryException("Status can't be changed to CompletedStatus.");
+
+            ord.ShippedDate = DateTime.Now;
+            Update(ord);
+        }
+
+        public IEnumerable<CustOrderHist> CustOrderHist(string customerId)
+        {
+            var commandText = $"EXEC [dbo].[CustOrderHist] @CustomerID = '{customerId}';";
+            return GetRows(commandText, ReadCollection<CustOrderHist>);
+        }
+
+        public IEnumerable<CustOrdersDetail> CustOrderDetail(int orderId)
+        {
+            var commandText = $"EXEC [dbo].CustOrdersDetail @OrderId = '{orderId}';";
+            return GetRows(commandText, ReadCollection<CustOrdersDetail>);
+        }
+
+        public void UpdateOrder(Order order)
+        {
+            if (order == null)
+                throw new ArgumentNullException();
+
+            var ord = GetOrderById(order.OrderId);
+
+            if (ord.Status != OrderStatus.New)
+                throw new RepositoryException(RepositoryExceptionType.NoRightsToExecuteRequest,
+                    "Only orders with New status can be changed");
+
+            if (order.OrderDate != ord.OrderDate || order.ShippedDate != ord.ShippedDate)
+                throw new RepositoryException(RepositoryExceptionType.NoRightsToExecuteRequest,
+                    "Orders with statuses InWork and Completed cannot be changed");
+
+            Update(order);
+        }
+
+        public void DeleteOrder(int id)
+        {
+            var ord = GetOrderById(id);
+
+            if (ord.Status == OrderStatus.Completed)
+                throw new RepositoryException(RepositoryExceptionType.NoRightsToExecuteRequest,
+                    "Orders with Completed status cannot be deleted");
+
+            var commandText = $"DELETE FROM dbo.Orders WHERE orderID={id}";
+            ExecuteNonQuery(commandText);
+        }
+
 
         public IEnumerable<Order> GetOrders()
         {
             const string command = "select * from dbo.Orders";
-            return GetRows(command, ReadOrders);
+            return GetRows(command, ReadCollection<Order>);
         }
 
         public Order GetOrderById(int id)
@@ -87,6 +115,21 @@ namespace Northwind.DAL
             var command = $"select * from dbo.Orders where OrderId={id};"
                           + $"select * from [dbo].[Order Details] as o left join[dbo].[Products] as p on o.ProductID=p.ProductID where o.OrderId={id}";
             return GetRows(command, ReadOrderWithDetails);
+        }
+
+        private void ExecuteNonQuery(string commandText, IDictionary<string, object> parameters = null)
+        {
+            using var connection = _providerFactory.CreateConnection();
+            connection.ConnectionString = _connectionString;
+            connection.Open();
+            using var command = connection.CreateCommand();
+
+            if (parameters != null)
+                command.Parameters.AddRange(parameters.Select(x
+                    => command.CreateParameter(x.Key, x.Value)).ToArray());
+
+            command.CommandText = commandText;
+            command.ExecuteNonQuery();
         }
 
         private T GetRows<T>(string commandText, Func<IDataReader, T> readingMethod)
@@ -99,15 +142,24 @@ namespace Northwind.DAL
             command.CommandText = commandText;
             using var reader = command.ExecuteReader();
 
-            return readingMethod(reader);
+            return reader.HasRows ? readingMethod(reader)
+                : throw new RepositoryException(RepositoryExceptionType.NotFound);
         }
 
-        private static IEnumerable<Order> ReadOrders(IDataReader reader)
+        private static IEnumerable<T> ReadCollection<T>(IDataReader reader)
+        where T : new()
         {
-            var orders = new List<Order>();
+            var items = new List<T>();
             while (reader.Read())
-                orders.Add(_mapper.Map<Order>(reader));
-            return orders;
+                items.Add(_mapper.Map<T>(reader));
+            return items;
+        }
+
+        private static T ReadElement<T>(IDataReader reader)
+            where T : new()
+        {
+            reader.Read();
+            return _mapper.Map<T>(reader);
         }
 
         private static Order ReadOrderWithDetails(IDataReader reader)
@@ -123,6 +175,45 @@ namespace Northwind.DAL
                 order.OrderDetails.Add(det);
             }
             return order;
+        }
+
+        private void Update(Order order)
+        {
+            var columnsDict = GetOrdersDictionary(order);
+            var commandText = "UPDATE dbo.Orders " +
+                              $"SET {string.Join(',', columnsDict.Keys.Select(key => key + "=@" + key))} " +
+                              $"WHERE OrderID = {order.OrderId}";
+
+            ExecuteNonQuery(commandText, columnsDict);
+        }
+
+        private static IDictionary<string, object> GetOrdersDictionary(Order order)
+        {
+            if (order == null)
+                throw new ArgumentNullException();
+
+            return new Dictionary<string, object>()
+            {
+                {nameof(order.CustomerID), order.CustomerID},
+                {nameof(order.EmployeeID), order.EmployeeID},
+                {nameof(order.OrderDate), order.OrderDate.HasValue
+                    ? $"{order.OrderDate.Value:yyyy - MM - dd HH: mm:ss}"
+                    : null},
+                {nameof(order.RequiredDate), order.RequiredDate.HasValue
+                    ? $"{order.RequiredDate.Value:yyyy - MM - dd HH: mm:ss}"
+                    : null},
+                {nameof(order.ShippedDate), order.ShippedDate.HasValue
+                    ? $"{order.ShippedDate.Value:yyyy - MM - dd HH: mm:ss}"
+                    : null},
+                {nameof(order.ShipVia), order.ShipVia},
+                {nameof(order.Freight), order.Freight},
+                {nameof(order.ShipName), order.ShipName},
+                {nameof(order.ShipAddress), order.ShipAddress},
+                {nameof(order.ShipCity), order.ShipCity},
+                {nameof(order.ShipRegion), order.ShipRegion},
+                {nameof(order.ShipPostalCode), order.ShipPostalCode},
+                {nameof(order.ShipCountry), order.ShipCountry}
+            };
         }
 
     }

@@ -5,14 +5,14 @@ using System.Linq;
 
 namespace Northwind.DAL.Mapping
 {
-    public class Mapper
+    public class Mapper : IMapper
     {
         public T Map<T>(IDataReader reader) where T : new()
         {
             if (reader == null)
                 throw new ArgumentNullException();
 
-            var propertyInfo = typeof(T)
+            var propertiesInfo = typeof(T)
                 .GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
             var columnNames = Enumerable.Range(0, reader.FieldCount)
@@ -21,7 +21,7 @@ namespace Northwind.DAL.Mapping
 
             var obj = new T();
 
-            foreach (var property in propertyInfo)
+            foreach (var property in propertiesInfo)
             {
                 if (!columnNames.Any(s => s.Equals(property.Name, StringComparison.OrdinalIgnoreCase)))
                     continue;
