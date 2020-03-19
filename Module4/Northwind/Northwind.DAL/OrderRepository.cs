@@ -64,13 +64,13 @@ namespace Northwind.DAL
         public IEnumerable<CustOrderHist> CustOrderHist(string customerId)
         {
             var commandText = $"EXEC [dbo].[CustOrderHist] @CustomerID = '{customerId}';";
-            return GetRows(commandText, ReadCollection<CustOrderHist>);
+            return ExecuteReader(commandText, ReadOrders<CustOrderHist>);
         }
 
         public IEnumerable<CustOrdersDetail> CustOrderDetail(int orderId)
         {
             var commandText = $"EXEC [dbo].CustOrdersDetail @OrderId = '{orderId}';";
-            return GetRows(commandText, ReadCollection<CustOrdersDetail>);
+            return ExecuteReader(commandText, ReadOrders<CustOrdersDetail>);
         }
 
         public void UpdateOrder(Order order)
@@ -107,14 +107,14 @@ namespace Northwind.DAL
         public IEnumerable<Order> GetOrders()
         {
             const string command = "select * from dbo.Orders";
-            return GetRows(command, ReadCollection<Order>);
+            return ExecuteReader(command, ReadOrders<Order>);
         }
 
         public Order GetOrderById(int id)
         {
             var command = $"select * from dbo.Orders where OrderId={id};"
                           + $"select * from [dbo].[Order Details] as o left join[dbo].[Products] as p on o.ProductID=p.ProductID where o.OrderId={id}";
-            return GetRows(command, ReadOrderWithDetails);
+            return ExecuteReader(command, ReadOrderWithDetails);
         }
 
         private void ExecuteNonQuery(string commandText, IDictionary<string, object> parameters = null)
@@ -132,7 +132,7 @@ namespace Northwind.DAL
             command.ExecuteNonQuery();
         }
 
-        private T GetRows<T>(string commandText, Func<IDataReader, T> readingMethod)
+        private T ExecuteReader<T>(string commandText, Func<IDataReader, T> readingMethod)
         {
             using var connection = _providerFactory.CreateConnection();
             connection.ConnectionString = _connectionString;
@@ -146,20 +146,13 @@ namespace Northwind.DAL
                 : throw new RepositoryException(RepositoryExceptionType.NotFound);
         }
 
-        private static IEnumerable<T> ReadCollection<T>(IDataReader reader)
+        private static IEnumerable<T> ReadOrders<T>(IDataReader reader)
         where T : new()
         {
             var items = new List<T>();
             while (reader.Read())
                 items.Add(_mapper.Map<T>(reader));
             return items;
-        }
-
-        private static T ReadElement<T>(IDataReader reader)
-            where T : new()
-        {
-            reader.Read();
-            return _mapper.Map<T>(reader);
         }
 
         private static Order ReadOrderWithDetails(IDataReader reader)
