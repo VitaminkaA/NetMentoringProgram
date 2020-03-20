@@ -25,14 +25,12 @@ namespace Northwind.DAL.Mapping
             {
                 if (!columnNames.Any(s => s.Equals(property.Name, StringComparison.OrdinalIgnoreCase)))
                     continue;
-                try
-                {
-                    property.SetValue(obj, reader[property.Name]);
-                }
-                catch (ArgumentException)
-                {
-                    property.SetValue(obj, default(T));
-                }
+
+                var value = reader[property.Name];
+                if (value is System.DBNull)
+                    value = null;
+
+                property.SetValue(obj, value);
             }
 
             return obj;
