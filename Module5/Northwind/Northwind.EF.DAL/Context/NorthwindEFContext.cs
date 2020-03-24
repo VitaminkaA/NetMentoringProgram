@@ -20,26 +20,26 @@ namespace Northwind.EF.DAL.Context
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetails> OrdersDetails { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<Region> Region { get; set; }
+        public DbSet<Region> Regions { get; set; }
         public DbSet<Shipper> Shippers { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Territory> Territories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new ShipperConfiguration());
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
+            modelBuilder.ApplyConfiguration(new SupplierConfiguration());
+            modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
             modelBuilder.ApplyConfiguration(new CustomerConfiguration());
+            modelBuilder.ApplyConfiguration(new RegionConfiguration());
+            modelBuilder.ApplyConfiguration(new TerritoryConfiguration());
+            modelBuilder.ApplyConfiguration(new EmployeeTerritoryConfiguration());
             modelBuilder.ApplyConfiguration(new CustomerCustomerDemoConfiguration());
             modelBuilder.ApplyConfiguration(new CustomerDemographicsConfiguration());
-            modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
-            modelBuilder.ApplyConfiguration(new EmployeeTerritoryConfiguration()); 
             modelBuilder.ApplyConfiguration(new OrderConfiguration());
             modelBuilder.ApplyConfiguration(new OrderDetailsConfiguration());
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
-            modelBuilder.ApplyConfiguration(new RegionConfiguration());
-            modelBuilder.ApplyConfiguration(new ShipperConfiguration());
-            modelBuilder.ApplyConfiguration(new SupplierConfiguration());
-            modelBuilder.ApplyConfiguration(new TerritoryConfiguration());
         }
 
     }

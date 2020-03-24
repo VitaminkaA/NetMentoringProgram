@@ -3,14 +3,13 @@ using System.Collections.Generic;
 
 namespace Northwind.EF.DAL.Entities
 {
-    public class Order
+    public class Order : BaseEntity<int>
     {
         public Order()
         {
             OrderDetails = new HashSet<OrderDetails>();
         }
 
-        public int OrderId { get; set; }
         public string CustomerId { get; set; }
         public int? EmployeeId { get; set; }
         public DateTime? OrderDate { get; set; }

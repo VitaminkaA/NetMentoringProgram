@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Northwind.EF.DAL.Context;
 
 namespace Northwind.Migrations.Migrations
 {
     [DbContext(typeof(NorthwindEFContext))]
-    partial class NorthwindEFContextModelSnapshot : ModelSnapshot
+    [Migration("20200324185712_Version1_1")]
+    partial class Version1_1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -120,9 +122,6 @@ namespace Northwind.Migrations.Migrations
                         .HasColumnType("nvarchar(15)")
                         .HasMaxLength(15);
 
-                    b.Property<DateTime>("EstablishmentDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Fax")
                         .HasColumnType("nvarchar(24)")
                         .HasMaxLength(24);
@@ -165,7 +164,6 @@ namespace Northwind.Migrations.Migrations
                             ContactName = "Maria Anders",
                             ContactTitle = "Sales Representative",
                             Country = "Germany",
-                            EstablishmentDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Fax = "030-0076545",
                             Phone = "030-0074321",
                             PostalCode = "12209"
@@ -179,7 +177,6 @@ namespace Northwind.Migrations.Migrations
                             ContactName = "Ana Trujillo",
                             ContactTitle = "Owner",
                             Country = "Mexico",
-                            EstablishmentDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Fax = "(5) 555-3745",
                             Phone = "(5) 555-4729",
                             PostalCode = "05021"
@@ -193,7 +190,6 @@ namespace Northwind.Migrations.Migrations
                             ContactName = "Antonio Moreno",
                             ContactTitle = "Owner",
                             Country = "Mexico",
-                            EstablishmentDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Phone = "(5) 555-3932",
                             PostalCode = "05023"
                         },
@@ -206,7 +202,6 @@ namespace Northwind.Migrations.Migrations
                             ContactName = "Thomas Hardy",
                             ContactTitle = "Sales Representative",
                             Country = "UK",
-                            EstablishmentDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Fax = "(171) 555-6750",
                             Phone = "(171) 555-7788",
                             PostalCode = "WA1 1DP"
@@ -220,7 +215,6 @@ namespace Northwind.Migrations.Migrations
                             ContactName = "Christina Berglund",
                             ContactTitle = "Order Administrator",
                             Country = "Sweden",
-                            EstablishmentDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Fax = "0921-12 34 67",
                             Phone = "0921-12 34 65",
                             PostalCode = "S-958 22"

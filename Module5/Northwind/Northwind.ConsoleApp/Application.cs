@@ -27,7 +27,7 @@ namespace Northwind.ConsoleApp
 
             foreach (var order in orders)
             {
-                Console.WriteLine($"Id:{order.OrderId}");
+                Console.WriteLine($"Id:{order.Id}");
                 Console.WriteLine($"Customer:{order.Customer}");
                 Console.WriteLine($"OrderDate:{order.OrderDate}");
                 Console.WriteLine($"RequiredDateDate:{order.RequiredDate}");

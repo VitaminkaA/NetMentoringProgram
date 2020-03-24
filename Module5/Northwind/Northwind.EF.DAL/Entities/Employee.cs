@@ -26,10 +26,8 @@ namespace Northwind.EF.DAL.Entities
         public string Country { get; set; }
         public string HomePhone { get; set; }
         public string Extension { get; set; }
-        public byte[] Photo { get; set; }
         public string Notes { get; set; }
         public int? ReportsTo { get; set; }
-        public string PhotoPath { get; set; }
 
         public virtual CreditCard CreditCard { get; set; }
         public virtual Employee ReportsToNavigation { get; set; }
