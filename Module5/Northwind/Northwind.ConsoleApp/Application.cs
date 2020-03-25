@@ -1,45 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Northwind.EF.DAL.Entities;
-using Northwind.EF.DAL.Repositories;
+﻿using Northwind.Core.Services;
+using System;
 
 namespace Northwind.ConsoleApp
 {
     public class Application
     {
-        private readonly IRepository<Order> _repository;
-        public Application(IRepository<Order> repository) 
-            => _repository = repository;
+        private readonly IOrderService _service;
+        public Application(IOrderService service) 
+            => _service = service;
 
-        public async Task RunAsync()
+        public void Run()
         {
-            var orders = 
-                await _repository.GetAll(x 
-                        => x.OrderDetails.All(y
-                            => y.Product.CategoryId == 1))
-                .ToListAsync();
-
-            foreach (var order in orders)
+            foreach (var order in _service.GetOrdersWithDescrByProductsCategory(1))
             {
-                Console.WriteLine($"Id:{order.Id}");
-                Console.WriteLine($"Customer:{order.Customer}");
-                Console.WriteLine($"OrderDate:{order.OrderDate}");
-                Console.WriteLine($"RequiredDateDate:{order.RequiredDate}");
-                Console.WriteLine($"ShippedDate:{order.ShippedDate}");
-                Console.WriteLine($"ShipAddress:{order.ShipAddress}");
+                Console.WriteLine($"-------------------------------------\r\n" +
+                                  $"Id:{order.Id}\r\n" +
+                                  $"Customer:{order.Customer.CompanyName}\r\n" +
+                                  $"OrderDate:{order.OrderDate}\r\n" +
+                                  $"RequiredDateDate:{order.RequiredDate}\r\n" +
+                                  $"ShippedDate:{order.ShippedDate}\r\n" +
+                                  $"ShipAddress:{order.ShipAddress}");
                 foreach (var orderDetail in order.OrderDetails)
                 {
-                    
                     Console.WriteLine($"Product name:{orderDetail.Product.ProductName}; " +
                                       $"Quantity:{orderDetail.Quantity}; " +
                                       $"UnitPrice:{orderDetail.UnitPrice}; " +
-                                      $"Discount:{orderDetail.Discount}. \r\n");
+                                      $"Discount:{orderDetail.Discount}. ");
                 }
             }
         }

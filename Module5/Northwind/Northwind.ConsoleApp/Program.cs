@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.DependencyInjection;
 using Northwind.ConsoleApp.Extensions;
@@ -9,11 +8,11 @@ namespace Northwind.ConsoleApp
 {
     public class Program
     {
-        public static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
-            await CreateServiceProvider()
+             CreateServiceProvider()
                 .GetService<Application>()
-                .RunAsync();
+                .Run();
         }
 
         private static IServiceProvider CreateServiceProvider()
