@@ -57,8 +57,8 @@ namespace SampleQueries
             }
         }
 
-        [Category("Restriction Operators")]
-        [Title("Where - Task 3.1")]
+        [Category("Homework")]
+        [Title("Task 1")]
         [Description("Выдайте список всех клиентов, чей суммарный оборот (сумма всех заказов) " +
         "превосходит некоторую величину X. Продемонстрируйте выполнение запроса с различными Х" +
         "(подумайте, можно ли обойтись без копирования запроса несколько раз.)")]
@@ -74,8 +74,8 @@ namespace SampleQueries
             }
         }
 
-        [Category("Restriction Operators")]
-        [Title("Where - Task 3.2")]
+        [Category("Homework")]
+        [Title("Task 2")]
         [Description("Для каждого клиента составьте список поставщиков, находящихся в той же" +
         "стране и том же городе. Сделайте задания с использованием группировки и без")]
         public void Linq4()
@@ -98,8 +98,8 @@ namespace SampleQueries
             ObjectDumper.Write(res2, 1);
         }
 
-        [Category("Restriction Operators")]
-        [Title("Where - Task 3.3")]
+        [Category("Homework")]
+        [Title("Task 3")]
         [Description("Найдите всех клиентов, у которых были заказы, превосходящие по сумме величину X")]
         public void Linq5()
         {
@@ -114,8 +114,8 @@ namespace SampleQueries
             }
         }
 
-        [Category("Restriction Operators")]
-        [Title("Where - Task 3.4")]
+        [Category("Homework")]
+        [Title("Task 4")]
         [Description("Выдайте список клиентов с указанием, начиная с какого месяца какого " +
         "года они стали клиентами (принять за таковые месяц и год самого первого заказа)")]
         public void Linq6()
@@ -143,8 +143,8 @@ namespace SampleQueries
             ObjectDumper.Write(res);
         }
 
-        [Category("Restriction Operators")]
-        [Title("Where - Task 3.5")]
+        [Category("Homework")]
+        [Title("Task 5")]
         [Description("Сделайте предыдущее задание, но выдайте список отсортированным по году, " +
         "месяцу, оборотам клиента (от максимального к минимальному) и имени клиента")]
         public void Linq7()
@@ -176,8 +176,8 @@ namespace SampleQueries
             ObjectDumper.Write(res);
         }
 
-        [Category("Restriction Operators")]
-        [Title("Where - Task 3.6")]
+        [Category("Homework")]
+        [Title("Task 6")]
         [Description("Укажите всех клиентов, у которых указан нецифровой почтовый код или не" +
         "заполнен регион или в телефоне не указан код оператора (для простоты считаем, что " +
         "это равнозначно «нет круглых скобочек в начале»")]
@@ -192,8 +192,8 @@ namespace SampleQueries
             ObjectDumper.Write(res);
         }
 
-        [Category("Restriction Operators")]
-        [Title("Where - Task 3.7")]
+        [Category("Homework")]
+        [Title("Task 7")]
         [Description("Сгруппируйте все продукты по категориям, внутри – по наличию на складе," +
         "внутри последней группы отсортируйте по стоимости")]
         public void Linq9()
@@ -214,8 +214,8 @@ namespace SampleQueries
             ObjectDumper.Write(res, 2);
         }
 
-        [Category("Restriction Operators")]
-        [Title("Where - Task 3.8")]
+        [Category("Homework")]
+        [Title("Task 8")]
         [Description("Сгруппируйте товары по группам «дешевые», «средняя цена», «дорогие»." +
         "Границы каждой группы задайте сами")]
         public void Linq10()
@@ -240,8 +240,8 @@ namespace SampleQueries
             ObjectDumper.Write(res, 1);
         }
 
-        [Category("Restriction Operators")]
-        [Title("Where - Task 3.9")]
+        [Category("Homework")]
+        [Title("Task 9")]
         [Description("Рассчитайте среднюю прибыльность каждого города (среднюю сумму заказа" +
         "по всем клиентам из данного города) и среднюю интенсивность (среднее количество " +
         "заказов, приходящееся на клиента из каждого города")]
@@ -258,8 +258,8 @@ namespace SampleQueries
             ObjectDumper.Write(res, 1);
         }
 
-        [Category("Restriction Operators")]
-        [Title("Where - Task 3.10")]
+        [Category("Homework")]
+        [Title("Task 10")]
         [Description("Сделайте среднегодовую статистику активности клиентов по месяцам " +
         "(без учета года), статистику по годам, по годам и месяцам (т.е. когда один " +
         "месяц в разные годы имеет своё значение)")]
