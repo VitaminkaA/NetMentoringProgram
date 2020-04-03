@@ -35,7 +35,5 @@ namespace Northwind.EF.DAL.Entities
             OtherKey = nameof(Entities.Supplier.SupplierId),
             CanBeNull = true)]
         public Supplier Supplier { get; set; }
-
-        //public virtual ICollection<OrderDetails> OrderDetails { get; set; }
     }
 }

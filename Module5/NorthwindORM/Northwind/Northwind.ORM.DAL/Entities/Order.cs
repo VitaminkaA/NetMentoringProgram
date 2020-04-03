@@ -43,8 +43,5 @@ namespace Northwind.EF.DAL.Entities
             OtherKey = nameof(Shipper.ShipperId),
             CanBeNull = true)]
         public Shipper ShipViaNavigation { get; set; }
-
-        //public virtual ICollection<OrderDetails> OrderDetails { get; set; }
-        ////public virtual Customer Customer { get; set; }
     }
 }

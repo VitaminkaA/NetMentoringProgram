@@ -29,7 +29,5 @@ namespace Northwind.EF.DAL.Entities
         public string Phone { get; set; }
         [Column]
         public string Fax { get; set; }
-        
-        //public virtual ICollection<Order> Orders { get; set; }
     }
 }

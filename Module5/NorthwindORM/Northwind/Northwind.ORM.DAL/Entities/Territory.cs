@@ -18,6 +18,5 @@ namespace Northwind.EF.DAL.Entities
             OtherKey = nameof(Entities.Region.RegionId),
             CanBeNull = true)]
         public Region Region { get; set; }
-        //public virtual ICollection<EmployeeTerritory> EmployeeTerritories { get; set; }
     }
 }
