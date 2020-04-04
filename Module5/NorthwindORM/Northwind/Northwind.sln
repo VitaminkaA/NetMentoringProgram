@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29806.167
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.ORM.ConsoleApp", "Northwind.ORM.ConsoleApp\Northwind.ORM.ConsoleApp.csproj", "{652CB957-827E-4DBD-84F5-0026A9EB8860}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.ORM.DAL", "Northwind.ORM.DAL\Northwind.ORM.DAL.csproj", "{44AE9FD5-AE81-4132-979D-DBEBF3319F15}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{652CB957-827E-4DBD-84F5-0026A9EB8860}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{652CB957-827E-4DBD-84F5-0026A9EB8860}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{652CB957-827E-4DBD-84F5-0026A9EB8860}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{652CB957-827E-4DBD-84F5-0026A9EB8860}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44AE9FD5-AE81-4132-979D-DBEBF3319F15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44AE9FD5-AE81-4132-979D-DBEBF3319F15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44AE9FD5-AE81-4132-979D-DBEBF3319F15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44AE9FD5-AE81-4132-979D-DBEBF3319F15}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A16812CC-F1F4-424C-8792-18B389125452}
+	EndGlobalSection
+EndGlobal
