@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Index - Northwind.WebApplication</title>
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/site.css" />
+</head>
+<body>
+    <header>
+        <div class="pos-f-t">
+                <nav class="navbar navbar-dark bg-dark justify-content-lg-start">
+                    <button class="navbar-toggler mr-3" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">Northwind</a>
+                    <a class="nav-link" href="/">Home</a>
+                    <a class="nav-link" href="/Home/Privacy">Privacy</a>
+                </nav>
+                <div class="collapse" id="navbarToggleExternalContent">
+                    <div class="bg-light p-3">
+                        <a class="nav-link text-dark border-bottom px-2" href="/Categories">Categories</a>
+                        <a class="nav-link text-dark border-bottom px-2" href="/Products">Products</a>
+                    </div>
+                </div>
+        </div>
+    </header>
+    <div class="container p-0 ">
+        <div>
+            
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-white px-0">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Products</li>
+    </ol>
+</nav>
+
+
+
+
+
+
+
+
+        </div>
+        <main role="main" class="pb-3">
+            
+
+<h1 class="m-auto py-4 position-relative float-left">Products</h1>
+<a class="btn float-right py-4" href="/Products/Create"><img src="https://img.icons8.com/cotton/48/000000/create-new--v3.png" /></a>
+<table class="table table-striped m-auto table-sm">
+    <thead>
+        <tr>
+            <th scope="col">Product Name</th>
+            <th scope="col">Quantity Per Unit Discontinued</th>
+            <th scope="col">Unit Price</th>
+            <th scope="col">Units In Stock</th>
+            <th scope="col">Units On Order</th>
+            <th scope="col">Reorder Level</th>
+            <th scope="col">Discontinued</th>
+            <th scope="col">Category</th>
+            <th scope="col">Supplier</th>
+        </tr>
+    </thead>
+    <tbody>
+            <tr>
+                <td>
+                    <a href="/Products/Edit/1">Chai</a>
+                </td>
+                <td>10 boxes x 20 bags</td>
+                <td>$18.00</td>
+                <td>39</td>
+                <td>0</td>
+                <td>10</td>
+                <td><input class="check-box" disabled="disabled" type="checkbox" /></td>
+                <td>Beverages</td>
+                <td>Exotic Liquids</td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="/Products/Edit/2">Chang</a>
+                </td>
+                <td>24 - 12 oz bottles</td>
+                <td>$19.00</td>
+                <td>17</td>
+                <td>40</td>
+                <td>25</td>
+                <td><input class="check-box" disabled="disabled" type="checkbox" /></td>
+                <td>Beverages</td>
+                <td>Exotic Liquids</td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="/Products/Edit/3">Aniseed Syrup</a>
+                </td>
+                <td>12 - 550 ml bottles</td>
+                <td>$10.00</td>
+                <td>13</td>
+                <td>70</td>
+                <td>25</td>
+                <td><input class="check-box" disabled="disabled" type="checkbox" /></td>
+                <td>Condiments</td>
+                <td>Exotic Liquids</td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="/Products/Edit/4">Chef Anton&#x27;s Cajun Seasoning</a>
+                </td>
+                <td>48 - 6 oz jars</td>
+                <td>$22.00</td>
+                <td>53</td>
+                <td>0</td>
+                <td>0</td>
+                <td><input class="check-box" disabled="disabled" type="checkbox" /></td>
+                <td>Condiments</td>
+                <td>New Orleans Cajun Delights</td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="/Products/Edit/5">Chef Anton&#x27;s Gumbo Mix</a>
+                </td>
+                <td>36 boxes</td>
+                <td>$21.35</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><input checked="checked" class="check-box" disabled="disabled" type="checkbox" /></td>
+                <td>Condiments</td>
+                <td>New Orleans Cajun Delights</td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="/Products/Edit/6">Grandma&#x27;s Boysenberry Spread</a>
+                </td>
+                <td>12 - 8 oz jars</td>
+                <td>$25.00</td>
+                <td>120</td>
+                <td>0</td>
+                <td>25</td>
+                <td><input class="check-box" disabled="disabled" type="checkbox" /></td>
+                <td>Condiments</td>
+                <td>Grandma Kelly&#x27;s Homestead</td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="/Products/Edit/7">Uncle Bob&#x27;s Organic Dried Pears</a>
+                </td>
+                <td>12 - 1 lb pkgs.</td>
+                <td>$30.00</td>
+                <td>15</td>
+                <td>0</td>
+                <td>10</td>
+                <td><input class="check-box" disabled="disabled" type="checkbox" /></td>
+                <td>Produce</td>
+                <td>Grandma Kelly&#x27;s Homestead</td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="/Products/Edit/8">Northwoods Cranberry Sauce</a>
+                </td>
+                <td>12 - 12 oz jars</td>
+                <td>$40.00</td>
+                <td>6</td>
+                <td>0</td>
+                <td>0</td>
+                <td><input class="check-box" disabled="disabled" type="checkbox" /></td>
+                <td>Condiments</td>
+                <td>Grandma Kelly&#x27;s Homestead</td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="/Products/Edit/9">Mishi Kobe Niku</a>
+                </td>
+                <td>18 - 500 g pkgs.</td>
+                <td>$97.00</td>
+                <td>29</td>
+                <td>0</td>
+                <td>0</td>
+                <td><input checked="checked" class="check-box" disabled="disabled" type="checkbox" /></td>
+                <td>Meat/Poultry</td>
+                <td>Tokyo Traders</td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="/Products/Edit/10">Ikura</a>
+                </td>
+                <td>12 - 200 ml jars</td>
+                <td>$31.00</td>
+                <td>31</td>
+                <td>0</td>
+                <td>0</td>
+                <td><input class="check-box" disabled="disabled" type="checkbox" /></td>
+                <td>Seafood</td>
+                <td>Tokyo Traders</td>
+            </tr>
+    </tbody>
+</table>
+
+
+        </main>
+    </div>
+    <footer class="border-top footer text-muted">
+        <div class="container">
+                <span>&copy; 2020 - Northwind - <a href="/Home/Privacy">Privacy</a></span>
+        </div>
+    </footer>
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
+    <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/site.js?v=4q1jwFhaPaZgr8WAUSrux6hAuh0XDg9kPS3xIVq36I0"></script>
+    
+</body>
+</html>

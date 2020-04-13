@@ -1,31 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using WGetAnalogue.Library.Models;
 
 namespace WGetAnalogue.Library.Services
 {
-    public class HTTPService
+    internal class HTTPService : IHTTPService
     {
         private readonly HttpClient _client;
 
         public HTTPService()
+            => _client = new HttpClient();
+
+        public async Task<ContentModel> GetContentAsync(Uri path)
         {
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            _client = new HttpClient();
-        }
+            using var response = await _client.GetAsync(path);
 
-        public async Task<string> GetSite(string url)
-        {
-            var uri = new Uri(url ?? throw new ArgumentNullException());
-            var res = await _client.GetAsync(uri);
-            byte[] buffer = await res.Content.ReadAsByteArrayAsync();
+            if (!response.IsSuccessStatusCode)
+                throw new Exception();
 
-            Encoding encoding = Encoding.GetEncoding("windows-1251");
+            var contentType = response.Content.Headers.ContentType;
 
-            return encoding.GetString(buffer,0,buffer.Length);
+            return new ContentModel
+            {
+                Type = contentType.MediaType
+                    .Split("/")
+                    .LastOrDefault(),
+                Content = await response.Content.ReadAsByteArrayAsync(),
+                CharSet = contentType.CharSet,
+            };
         }
     }
 }
