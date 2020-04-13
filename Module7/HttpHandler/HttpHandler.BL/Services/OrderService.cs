@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace HttpHandler.BL.Services
 {
@@ -15,29 +16,27 @@ namespace HttpHandler.BL.Services
         public OrderService(IRepository<Order> repository)
             => _repository = repository;
 
-        public IEnumerable<Order> GetReport(FilterModel filter)
+        public async Task<IEnumerable<Order>> GetReport(FilterModel filter)
         {
-            IQueryable<Order> res;
-
             if (filter == null)
-                res = _repository.GetAll();
-            else
-            {
-                Expression<Func<Order, bool>> filterExpression = x =>
-                                    string.IsNullOrWhiteSpace(filter.CustomerId) ? true : x.CustomerId == filter.CustomerId
-                                    && !filter.DateRange.Item1.HasValue ? true : x.OrderDate > filter.DateRange.Item1.Value
-                                    && !filter.DateRange.Item2.HasValue ? true : x.OrderDate < filter.DateRange.Item1.Value;
+                throw new ArgumentNullException();
 
-                res = _repository.GetAll(filterExpression);
+            Expression<Func<Order, bool>> filterExpression = x =>
+                                (string.IsNullOrWhiteSpace(filter.CustomerId) || x.CustomerId == filter.CustomerId)
+                                    && (!filter.DateRange.Item1.HasValue || (x.OrderDate > filter.DateRange.Item1.Value)
+                                        && (!filter.DateRange.Item2.HasValue || x.OrderDate < filter.DateRange.Item1.Value));
 
-                if (filter.Skip > 0)
-                    res = res.Skip(filter.Skip);
-                if (filter.Take > 0)
-                    res = res.Take(filter.Take);
-            }
+            var res = _repository.GetAll(filterExpression);
 
-            return res.Include(x => x.OrderDetails)
-                      .ThenInclude(x => x.Product);
+            if (filter.Skip.HasValue)
+                res = res.Skip(filter.Skip.Value);
+            if (filter.Take.HasValue)
+                res = res.Take(filter.Take.Value);
+
+            return await res.OrderBy(x => x.Id)
+                .Include(x => x.OrderDetails)
+                      .ThenInclude(x => x.Product)
+                .ToListAsync();
         }
 
     }

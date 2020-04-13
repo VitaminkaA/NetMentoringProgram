@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "HttpHandler.ConsoleApp": {
+      "commandName": "Project"
+    },
+    "IISExpress": {
+      "commandName": "Executable",
+      "environmentVariables": {
+        "Key": "Value"
+      }
+    }
+  }
+}

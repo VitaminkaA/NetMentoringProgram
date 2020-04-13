@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HttpHandler.BL.Models
 {
@@ -8,7 +6,7 @@ namespace HttpHandler.BL.Models
     {
         public string CustomerId { get; set; }
         public (DateTimeOffset?, DateTimeOffset?) DateRange { get; set; }
-        public int Skip { get; set; }
-        public int Take { get; set; }
+        public int? Skip { get; set; }
+        public int? Take { get; set; }
     }
 }

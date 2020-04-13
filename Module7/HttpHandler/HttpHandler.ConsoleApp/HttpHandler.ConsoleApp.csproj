@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0-preview.2.20160.3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.0-preview.2.20160.3" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.3" />
+    <PackageReference Include="System.Net.Http.Formatting.Extension" Version="5.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HttpHandler.BL\HttpHandler.BL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
