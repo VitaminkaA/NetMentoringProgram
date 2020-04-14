@@ -33,10 +33,8 @@ namespace MvcMusicStore.Controllers
             _userManager = userManager;
         }
 
-        private IAuthenticationManager AuthenticationManager
-        {
-            get { return HttpContext.GetOwinContext().Authentication; }
-        }
+        private IAuthenticationManager AuthenticationManager 
+            => HttpContext.GetOwinContext().Authentication;
 
         private async Task MigrateShoppingCart(string userName)
         {
