@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using System;
+using NLog;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -22,18 +23,25 @@ namespace MvcMusicStore
         protected void Application_Start()
         {
             var builder = new ContainerBuilder();
-
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
             builder.RegisterType<Logger>().As<ILogger>();
-
             var container = builder.Build();
+
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
 
-            _logger.Info("Application Start");
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            _logger.Info("Application Started");
+
+        }
+
+        protected void Application_Error(object sender, EventArgs e)
+        {
+            var exception = Server.GetLastError();
+            _logger.Error(exception.Message);
+            Response.Redirect("/Home/Error");
         }
     }
 }

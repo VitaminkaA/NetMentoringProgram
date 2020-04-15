@@ -1,10 +1,13 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
+using MvcMusicStore.Infrastructure;
 using MvcMusicStore.Models;
+using PerformanceCounterHelper;
 
 namespace MvcMusicStore.Controllers
 {
@@ -20,12 +23,14 @@ namespace MvcMusicStore.Controllers
         }
 
         private const string XsrfKey = "XsrfId";
+        private readonly CounterHelper<Counters> _counterHelper;
 
         private UserManager<ApplicationUser> _userManager;
 
         public AccountController()
             : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
         {
+            _counterHelper = PerformanceHelper.CreateCounterHelper<Counters>("Test project");
         }
 
         public AccountController(UserManager<ApplicationUser> userManager)
@@ -52,6 +57,7 @@ namespace MvcMusicStore.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            _counterHelper.Increment(Counters.GoToLogin);
             ViewBag.ReturnUrl = returnUrl;
 
             return View();
@@ -63,19 +69,19 @@ namespace MvcMusicStore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
+            _counterHelper.Increment(Counters.GoToLogin);
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindAsync(model.UserName, model.Password);
                 if (user != null)
                 {
                     await SignInAsync(user, model.RememberMe);
-
+                    _counterHelper.Increment(Counters.SuccessfulLogin);
                     return RedirectToLocal(returnUrl);
                 }
-
                 ModelState.AddModelError("", "Invalid username or password.");
             }
-
+            _counterHelper.Increment(Counters.FailedLogin);
             return View(model);
         }
 
