@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit - Northwind.WebApplication</title>
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/site.css" />
+</head>
+<body>
+    <header>
+        <div class="pos-f-t">
+                <nav class="navbar navbar-dark bg-dark justify-content-lg-start">
+                    <button class="navbar-toggler mr-3" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">Northwind</a>
+                    <a class="nav-link" href="/">Home</a>
+                    <a class="nav-link" href="/Home/Privacy">Privacy</a>
+                </nav>
+                <div class="collapse" id="navbarToggleExternalContent">
+                    <div class="bg-light p-3">
+                        <a class="nav-link text-dark border-bottom px-2" href="/Categories">Categories</a>
+                        <a class="nav-link text-dark border-bottom px-2" href="/Products">Products</a>
+                    </div>
+                </div>
+        </div>
+    </header>
+    <div class="container p-0 ">
+        <div>
+            
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-white px-0">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="/Products">Products</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Edit</li>
+    </ol>
+</nav>
+
+
+
+
+
+
+
+
+        </div>
+        <main role="main" class="pb-3">
+            
+
+<h1 class="m-auto pt-5">Edit Product</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form action="/Products/Edit/7" method="post">
+            
+            <input type="hidden" data-val="true" data-val-required="The Id field is required." id="Id" name="Id" value="7" />
+            <div class="form-group">
+                <label class="control-label" for="ProductName">Product Name</label>
+                <input class="form-control" type="text" data-val="true" data-val-length="Name length can&#x27;t be more than 256" data-val-length-max="256" data-val-required="The Product Name field is required." id="ProductName" maxlength="256" name="ProductName" value="Uncle Bob&#x27;s Organic Dried Pears" />
+                <span class="text-danger field-validation-valid" data-valmsg-for="ProductName" data-valmsg-replace="true"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="SupplierId">Supplier Id</label>
+                <select class="form-control" data-val="true" data-val-required="The Supplier Id field is required." id="SupplierId" name="SupplierId"><option value="1">Exotic Liquids</option>
+<option value="2">New Orleans Cajun Delights</option>
+<option selected="selected" value="3">Grandma Kelly&#x27;s Homestead</option>
+<option value="4">Tokyo Traders</option>
+<option value="5">Cooperativa de Quesos &#x27;Las Cabras&#x27;</option>
+<option value="6">Mayumi&#x27;s</option>
+<option value="7">Pavlova, Ltd.</option>
+<option value="8">Specialty Biscuits, Ltd.</option>
+<option value="9">PB Knackebrod AB</option>
+<option value="10">Refrescos Americanas LTDA</option>
+<option value="11">Heli Su?waren GmbH &amp; Co. KG</option>
+<option value="12">Plutzer Lebensmittelgro?markte AG</option>
+<option value="13">Nord-Ost-Fisch Handelsgesellschaft mbH</option>
+<option value="14">Formaggi Fortini s.r.l.</option>
+<option value="15">Norske Meierier</option>
+<option value="16">Bigfoot Breweries</option>
+<option value="17">Svensk Sjofoda AB</option>
+<option value="18">Aux joyeux ecclesiastiques</option>
+<option value="19">New England Seafood Cannery</option>
+<option value="20">Leka Trading</option>
+<option value="21">Lyngbysild</option>
+<option value="22">Zaanse Snoepfabriek</option>
+<option value="23">Karkki Oy</option>
+<option value="24">G&#x27;day, Mate</option>
+<option value="25">Ma Maison</option>
+<option value="26">Pasta Buttini s.r.l.</option>
+<option value="27">Escargots Nouveaux</option>
+<option value="28">Gai paturage</option>
+<option value="29">Forets d&#x27;erables</option>
+</select>
+                <span class="text-danger field-validation-valid" data-valmsg-for="SupplierId" data-valmsg-replace="true"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="CategoryId">Category Id</label>
+                <select class="form-control" data-val="true" data-val-required="The Category Id field is required." id="CategoryId" name="CategoryId"><option value="1">Beverages</option>
+<option value="2">Condiments</option>
+<option value="3">Confections</option>
+<option value="4">Dairy Products</option>
+<option value="5">Grains/Cereals</option>
+<option value="6">Meat/Poultry</option>
+<option selected="selected" value="7">Produce</option>
+<option value="8">Seafood</option>
+</select>
+                <span class="text-danger field-validation-valid" data-valmsg-for="CategoryId" data-valmsg-replace="true"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="QuantityPerUnit">Quantity Per Unit Discontinued</label>
+                <input class="form-control" type="text" id="QuantityPerUnit" name="QuantityPerUnit" value="12 - 1 lb pkgs." />
+                <span class="text-danger field-validation-valid" data-valmsg-for="QuantityPerUnit" data-valmsg-replace="true"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="UnitPrice">Unit Price</label>
+                <input class="form-control" type="text" data-val="true" data-val-number="The field Unit Price must be a number." data-val-required="The Unit Price field is required." id="UnitPrice" name="UnitPrice" value="30.00" />
+                <span class="text-danger field-validation-valid" data-valmsg-for="UnitPrice" data-valmsg-replace="true"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="UnitsInStock">Units In Stock</label>
+                <input class="form-control" type="number" id="UnitsInStock" name="UnitsInStock" value="15" />
+                <span class="text-danger field-validation-valid" data-valmsg-for="UnitsInStock" data-valmsg-replace="true"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="UnitsOnOrder">Units On Order</label>
+                <input class="form-control" type="number" id="UnitsOnOrder" name="UnitsOnOrder" value="0" />
+                <span class="text-danger field-validation-valid" data-valmsg-for="UnitsOnOrder" data-valmsg-replace="true"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="ReorderLevel">Reorder Level</label>
+                <input class="form-control" type="number" id="ReorderLevel" name="ReorderLevel" value="10" />
+                <span class="text-danger field-validation-valid" data-valmsg-for="ReorderLevel" data-valmsg-replace="true"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" data-val="true" data-val-required="The Discontinued field is required." id="Discontinued" name="Discontinued" value="true" /> Discontinued
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        <input name="__RequestVerificationToken" type="hidden" value="CfDJ8GQ8curQbqBPlw0Ny6MpYJhClkMPr40n3j_MTCFcwhTrfKPLe81M8R4_p9rabvmXV26PzM9osoMuDdtGwiSby4zolMu70zYFB-Jcih5kWWTGEODkBHzEQV43Y6Rrr15w53DwPZoWsRrK0w2PmdtOVM4" /><input name="Discontinued" type="hidden" value="false" /></form>
+    </div>
+</div>
+
+<div>
+    <a href="/Products">Back to List</a>
+</div>
+
+
+        </main>
+    </div>
+    <footer class="border-top footer text-muted">
+        <div class="container">
+                <span>&copy; 2020 - Northwind - <a href="/Home/Privacy">Privacy</a></span>
+        </div>
+    </footer>
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
+    <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/site.js?v=4q1jwFhaPaZgr8WAUSrux6hAuh0XDg9kPS3xIVq36I0"></script>
+    
+<script src="/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+</body>
+</html>
