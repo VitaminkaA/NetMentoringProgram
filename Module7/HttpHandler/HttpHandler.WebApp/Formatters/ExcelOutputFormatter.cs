@@ -20,9 +20,9 @@ namespace HttpHandler.WebApp.Formatters
         public ExcelOutputFormatter() 
             => SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse(_mediaType));
 
-        public bool CanWriteType(OutputFormatterCanWriteContext context)
+        protected override bool CanWriteType(Type type)
         {
-            return typeof(IEnumerable<object>).IsAssignableFrom(context.ObjectType);
+            return typeof(IEnumerable<object>).IsAssignableFrom(type);
         }
 
         public override async Task WriteResponseBodyAsync(OutputFormatterWriteContext context)

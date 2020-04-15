@@ -1,3 +1,4 @@
+using System.Text.Json;
 using HttpHandler.BL.Services;
 using HttpHandler.DAL.Context;
 using HttpHandler.DAL.Repositories;
@@ -38,10 +39,11 @@ namespace HttpHandler.WebApp
                 {
                     options.RespectBrowserAcceptHeader = true;
                     options.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
+                    options.OutputFormatters.Add(new SystemTextJsonOutputFormatter(new JsonSerializerOptions()));
                     options.OutputFormatters.Add(new ExcelOutputFormatter());
-                    options.FormatterMappings.SetMediaTypeMappingForFormat("xml", 
+                    options.FormatterMappings.SetMediaTypeMappingForFormat("xml",
                         new MediaTypeHeaderValue("application/xml"));
-                    options.FormatterMappings.SetMediaTypeMappingForFormat("excel", 
+                    options.FormatterMappings.SetMediaTypeMappingForFormat("excel",
                         new MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
                 });
         }
