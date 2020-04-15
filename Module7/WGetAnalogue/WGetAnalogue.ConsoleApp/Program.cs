@@ -39,12 +39,6 @@ namespace WGetAnalogue.ConsoleApp
             string savePath5 = $"{Directory.GetCurrentDirectory()}\\Example5";
             await myCass.CreateCopyAsync(sitePath5, savePath5, 2, new List<string> { "html" },
                 Library.Models.TransitionRestrictionsEnum.NoTransitionRestrictions);
-
-            //string sitePath = "https://localhost:44313/Categories/GetImage/1.bmp";
-            //string sitePath = "https://www.google.by/";
-
-
-
             Console.WriteLine();
         }
     }
