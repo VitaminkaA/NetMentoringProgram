@@ -23,22 +23,25 @@ namespace MvcMusicStore.Controllers
         }
 
         private const string XsrfKey = "XsrfId";
-        private readonly CounterHelper<Counters> _counterHelper;
+        private static readonly CounterHelper<Counters> _counterHelper;
+
+        static AccountController()
+        {
+            _counterHelper = PerformanceHelper.CreateCounterHelper<Counters>("Test project");
+        }
 
         private UserManager<ApplicationUser> _userManager;
 
         public AccountController()
             : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
-        {
-            _counterHelper = PerformanceHelper.CreateCounterHelper<Counters>("Test project");
-        }
+        { }
 
         public AccountController(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
         }
 
-        private IAuthenticationManager AuthenticationManager 
+        private IAuthenticationManager AuthenticationManager
             => HttpContext.GetOwinContext().Authentication;
 
         private async Task MigrateShoppingCart(string userName)
@@ -322,7 +325,7 @@ namespace MvcMusicStore.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut();
-
+            _counterHelper.Increment(Counters.LoginOff);
             return RedirectToAction("Index", "Home");
         }
 

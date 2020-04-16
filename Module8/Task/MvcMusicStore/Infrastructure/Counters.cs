@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using PerformanceCounterHelper;
+﻿using PerformanceCounterHelper;
 
 namespace MvcMusicStore.Infrastructure
 {
@@ -15,13 +11,20 @@ namespace MvcMusicStore.Infrastructure
             "Go To Login",
             System.Diagnostics.PerformanceCounterType.NumberOfItems32)]
         GoToLogin,
+
         [PerformanceCounter("Successful Login",
             "Successful Login",
             System.Diagnostics.PerformanceCounterType.NumberOfItems32)]
         SuccessfulLogin,
+
         [PerformanceCounter("Failed Login",
             "Failed Login",
             System.Diagnostics.PerformanceCounterType.NumberOfItems32)]
-        FailedLogin
+        FailedLogin,
+
+        [PerformanceCounter("Login Off",
+            "Log Off",
+            System.Diagnostics.PerformanceCounterType.NumberOfItems32)]
+        LoginOff
     }
 }
