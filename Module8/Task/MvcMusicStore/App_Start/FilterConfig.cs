@@ -1,5 +1,7 @@
 ﻿using System.Web;
 using System.Web.Mvc;
+using MvcMusicStore.Filters;
+using NLog;
 
 namespace MvcMusicStore
 {
@@ -8,6 +10,7 @@ namespace MvcMusicStore
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
+            filters.Add(new CustomExceptionFilterAttribute());
         }
     }
 }

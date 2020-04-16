@@ -34,14 +34,6 @@ namespace MvcMusicStore
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             _logger.Info("Application Started");
-
-        }
-
-        protected void Application_Error(object sender, EventArgs e)
-        {
-            var exception = Server.GetLastError();
-            _logger.Error(exception.Message);
-            Response.Redirect("/Home/Error");
         }
     }
 }
