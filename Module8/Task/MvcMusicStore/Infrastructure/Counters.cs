@@ -22,9 +22,9 @@ namespace MvcMusicStore.Infrastructure
             System.Diagnostics.PerformanceCounterType.NumberOfItems32)]
         FailedLogin,
 
-        [PerformanceCounter("Login Off",
-            "Log Off",
-            System.Diagnostics.PerformanceCounterType.NumberOfItems32)]
-        LoginOff
+        [PerformanceCounter("Log Out",
+            "Log out",
+            System.Diagnostics.PerformanceCounterType.NumberOfItems64)]
+        LogOut,
     }
 }

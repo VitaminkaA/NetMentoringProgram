@@ -325,7 +325,7 @@ namespace MvcMusicStore.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut();
-            _counterHelper.Increment(Counters.LoginOff);
+            _counterHelper.Increment(Counters.LogOut);
             return RedirectToAction("Index", "Home");
         }
 
