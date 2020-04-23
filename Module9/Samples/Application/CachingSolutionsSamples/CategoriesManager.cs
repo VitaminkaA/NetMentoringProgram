@@ -5,39 +5,38 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using CachingSolutionsSamples.Service;
 
 namespace CachingSolutionsSamples
 {
-	public class CategoriesManager
-	{
-		private ICategoriesCache cache;
+    public class CategoriesManager
+    {
+        private readonly IMyCache _cache;
+        private const string PREFIX = "Cache_Categories";
 
-		public CategoriesManager(ICategoriesCache cache)
-		{
-			this.cache = cache;
-		}
+        public CategoriesManager(IMyCache cache)
+        {
+            _cache = cache;
+        }
 
-		public IEnumerable<Category> GetCategories()
-		{
-			Console.WriteLine("Get Categories");
+        public IEnumerable<Category> GetCategories()
+        {
+            Console.WriteLine("Get Categories");
 
-			var user = Thread.CurrentPrincipal.Identity.Name;
-			var categories = cache.Get(user);
+            var key = PREFIX + Thread.CurrentPrincipal.Identity.Name;
+            var categories = _cache.TryGet<IEnumerable<Category>>(key);
+            if (categories != null) return categories;
 
-			if (categories == null)
-			{
-				Console.WriteLine("From DB");
+            Console.WriteLine("From DB");
+            using (var dbContext = new Northwind())
+            {
+                dbContext.Configuration.LazyLoadingEnabled = false;
+                dbContext.Configuration.ProxyCreationEnabled = false;
+                categories = dbContext.Categories.ToList();
+                _cache.Set(key, categories);
+            }
 
-				using (var dbContext = new Northwind())
-				{
-					dbContext.Configuration.LazyLoadingEnabled = false;
-					dbContext.Configuration.ProxyCreationEnabled = false;
-					categories = dbContext.Categories.ToList();
-					cache.Set(user, categories);
-				}
-			}
-
-			return categories;
-		}
-	}
+            return categories;
+        }
+    }
 }

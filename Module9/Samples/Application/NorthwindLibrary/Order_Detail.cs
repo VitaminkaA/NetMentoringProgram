@@ -7,7 +7,7 @@ namespace NorthwindLibrary
     using System.Data.Entity.Spatial;
 
     [Table("Order Details")]
-    public partial class Order_Detail
+    public partial class Order_Detail : BaseEntity
     {
         [Key]
         [Column(Order = 0)]
