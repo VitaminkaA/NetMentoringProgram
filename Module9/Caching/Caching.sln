@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Caching.FibonacciNumbers.ConsolApp", "Caching.FibonacciNumbers.ConsolApp\Caching.FibonacciNumbers.ConsolApp.csproj", "{AE2A708C-0EE1-4A30-8E67-418BB0F60F5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caching.FibonacciNumbers.ConsolApp", "Caching.FibonacciNumbers.ConsolApp\Caching.FibonacciNumbers.ConsolApp.csproj", "{AE2A708C-0EE1-4A30-8E67-418BB0F60F5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Caching.FibonacciNumbers.Library", "Caching.FibonacciNumbers.Library\Caching.FibonacciNumbers.Library.csproj", "{D8C22ACD-22CD-4A86-B707-59DA655734E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caching.FibonacciNumbers.Core", "Caching.FibonacciNumbers.Library\Caching.FibonacciNumbers.Core.csproj", "{D8C22ACD-22CD-4A86-B707-59DA655734E2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

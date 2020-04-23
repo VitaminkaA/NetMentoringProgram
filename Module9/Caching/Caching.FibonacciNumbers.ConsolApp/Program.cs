@@ -1,13 +1,23 @@
-﻿using Caching.FibonacciNumbers.Library.Services;
-using System;
+﻿using System;
+using Caching.FibonacciNumbers.ConsolApp.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Caching.FibonacciNumbers.ConsolApp
 {
     class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            CreateServiceProvider()
+                .GetService<Application>()
+                .Run();
+        }
+
+        private static IServiceProvider CreateServiceProvider()
+        {
+            return new ServiceCollection()
+                .RegisterDependencies()
+                .BuildServiceProvider();
         }
     }
 }
