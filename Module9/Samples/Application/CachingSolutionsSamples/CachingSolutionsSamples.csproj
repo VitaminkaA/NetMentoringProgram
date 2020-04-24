@@ -86,6 +86,10 @@
       <HintPath>..\..\packages\System.ComponentModel.Annotations.5.0.0-preview.3.20214.6\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.SqlClient, Version=4.6.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Data.SqlClient.4.8.1\lib\net461\System.Data.SqlClient.dll</HintPath>
+    </Reference>
     <Reference Include="System.Diagnostics.PerformanceCounter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Diagnostics.PerformanceCounter.5.0.0-preview.3.20214.6\lib\net461\System.Diagnostics.PerformanceCounter.dll</HintPath>
     </Reference>
@@ -116,6 +120,7 @@
       <HintPath>..\..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -130,10 +135,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="CategoriesManager.cs" />
+    <Compile Include="Service\CachePolicy.cs" />
     <Compile Include="CacheTests.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="Managers\EntitiesManager.cs" />
+    <Compile Include="Manager\EntitiesManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\IMyCache.cs" />
     <Compile Include="Service\MyMemoryCache.cs" />

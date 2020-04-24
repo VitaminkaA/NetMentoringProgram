@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Caching;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CachingSolutionsSamples.Service
 {
     public class MyMemoryCache : IMyCache
     {
+        private readonly TimeSpan _defSlidingExpiration = TimeSpan.FromSeconds(Constants.DEFAULT_SLIDING_EXPIRATION);
         private readonly ObjectCache _cache;
         private readonly CacheItemPolicy _cacheItemPolicy;
 
@@ -17,7 +14,7 @@ namespace CachingSolutionsSamples.Service
             _cache = MemoryCache.Default;
             _cacheItemPolicy = new CacheItemPolicy
             {
-                SlidingExpiration = TimeSpan.FromSeconds(Constants.DEFAULT_SLIDING_EXPIRATION)
+                SlidingExpiration = _defSlidingExpiration,
             };
         }
 
@@ -36,6 +33,27 @@ namespace CachingSolutionsSamples.Service
                 throw new ArgumentNullException(nameof(value));
 
             _cache.Set(key, value, _cacheItemPolicy);
+        }
+
+        public void Set<T>(string key, T value, CachePolicy policy) where T : class
+        {
+            if (string.IsNullOrWhiteSpace(key))
+                throw new ArgumentException(nameof(key));
+            if (value == null)
+                throw new ArgumentNullException(nameof(value));
+            if (policy == null)
+                throw new ArgumentNullException(nameof(policy));
+
+            var cachePolicy = new CacheItemPolicy
+            {
+                SlidingExpiration = policy?.SlidingExpiration 
+                                    ?? _defSlidingExpiration
+            };
+
+            if(policy.ChangeMonitor!=null)
+                cachePolicy.ChangeMonitors.Add(policy.ChangeMonitor);
+
+            _cache.Set(key, value, cachePolicy);
         }
     }
 }

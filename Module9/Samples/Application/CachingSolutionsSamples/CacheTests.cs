@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using System.Threading;
-using CachingSolutionsSamples.Managers;
+using CachingSolutionsSamples.Manager;
 using CachingSolutionsSamples.Service;
 using Microsoft.Extensions.Caching.Redis;
 using NorthwindLibrary;

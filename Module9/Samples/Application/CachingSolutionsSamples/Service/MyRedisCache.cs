@@ -7,6 +7,8 @@ namespace CachingSolutionsSamples.Service
 {
     public class MyRedisCache : IMyCache
     {
+        private readonly TimeSpan _defSlidingExpiration = TimeSpan.FromSeconds(Constants.DEFAULT_SLIDING_EXPIRATION);
+        
         private readonly RedisCache _cache;
         private readonly DistributedCacheEntryOptions _cacheEntryOptions;
 
@@ -15,7 +17,7 @@ namespace CachingSolutionsSamples.Service
             _cache = new RedisCache(options);
             _cacheEntryOptions = new DistributedCacheEntryOptions
             {
-                SlidingExpiration = TimeSpan.FromSeconds(Constants.DEFAULT_SLIDING_EXPIRATION)
+                SlidingExpiration = _defSlidingExpiration
             };
         }
 
@@ -34,6 +36,24 @@ namespace CachingSolutionsSamples.Service
                 throw new ArgumentException(nameof(key));
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
+
+            var jsonString = JsonConvert.SerializeObject(value);
+            _cache.SetString(key, jsonString, _cacheEntryOptions);
+        }
+
+        public void Set<T>(string key, T value, CachePolicy policy) where T : class
+        {
+            if (string.IsNullOrWhiteSpace(key))
+                throw new ArgumentException(nameof(key));
+            if (value == null)
+                throw new ArgumentNullException(nameof(value));
+            if (policy == null)
+                throw new ArgumentNullException(nameof(policy));
+
+            var cacheEntryOptions = new DistributedCacheEntryOptions
+            {
+                SlidingExpiration = policy?.SlidingExpiration ?? _defSlidingExpiration
+            };
 
             var jsonString = JsonConvert.SerializeObject(value);
             _cache.SetString(key, jsonString, _cacheEntryOptions);

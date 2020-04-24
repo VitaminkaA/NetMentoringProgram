@@ -6,5 +6,6 @@ namespace CachingSolutionsSamples.Service
     {
         T TryGet<T>(string key) where T : class;
         void Set<T>(string key, T value) where T : class;
+        void Set<T>(string key, T value, CachePolicy policy) where T : class;
     }
 }
