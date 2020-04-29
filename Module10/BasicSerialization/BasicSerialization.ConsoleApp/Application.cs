@@ -8,8 +8,8 @@ namespace BasicSerialization.ConsoleApp
     public class Application
     {
         private readonly BooksSettings _settings;
-        private readonly IBookSerializationToFileService _service;
-        public Application(IOptions<BooksSettings> options, IBookSerializationToFileService service)
+        private readonly ICatalogSerializationToFileService _service;
+        public Application(IOptions<BooksSettings> options, ICatalogSerializationToFileService service)
         {
             _settings = options?.Value ?? throw new ArgumentNullException();
             _service = service ?? throw new ArgumentNullException();

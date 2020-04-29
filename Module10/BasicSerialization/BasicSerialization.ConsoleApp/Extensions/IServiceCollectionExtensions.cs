@@ -15,7 +15,7 @@ namespace BasicSerialization.ConsoleApp.Extensions
 
             return service.AddSingleton<Application>()
                 .AddSingleton<ISerializationService, SerializationService>()
-                .AddSingleton<IBookSerializationToFileService,BookSerializationToFileService>()
+                .AddSingleton<ICatalogSerializationToFileService,CatalogSerializationToFileService>()
                 .Configure<BooksSettings>(config.GetSection("BooksSettings"));
         }
     }

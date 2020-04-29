@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Threading.Tasks;
 using BasicSerialization.ConsoleApp.Extensions;
 
 namespace BasicSerialization.ConsoleApp
