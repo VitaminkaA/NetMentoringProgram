@@ -7,63 +7,70 @@ using System.Collections.Generic;
 
 namespace Task
 {
-	[TestClass]
-	public class SerializationSolutions
-	{
-		Northwind dbContext;
+    [TestClass]
+    public class SerializationSolutions
+    {
+        Northwind dbContext;
 
-		[TestInitialize]
-		public void Initialize()
-		{
-			dbContext = new Northwind();
-		}
+        [TestInitialize]
+        public void Initialize()
+        {
+            dbContext = new Northwind();
+        }
 
-		[TestMethod]
-		public void SerializationCallbacks()
-		{
-			dbContext.Configuration.ProxyCreationEnabled = false;
+        [TestMethod]
+        public void SerializationCallbacks()
+        {
+            dbContext.Configuration.ProxyCreationEnabled = false;
 
-			var tester = new XmlDataContractSerializerTester<IEnumerable<Category>>(new NetDataContractSerializer(), true);
-			var categories = dbContext.Categories.ToList();
+            var tester = new XmlDataContractSerializerTester<IEnumerable<Category>>(new NetDataContractSerializer(), true);
+            var categories = dbContext.Categories.ToList();
 
-			var c = categories.First();
+            var c = categories.First();
 
-			tester.SerializeAndDeserialize(categories);
-		}
+            tester.SerializeAndDeserialize(categories);
+        }
 
-		[TestMethod]
-		public void ISerializable()
-		{
-			dbContext.Configuration.ProxyCreationEnabled = false;
+        [TestMethod]
+        public void ISerializable()
+        {
+            dbContext.Configuration.ProxyCreationEnabled = false;
 
-			var tester = new XmlDataContractSerializerTester<IEnumerable<Product>>(new NetDataContractSerializer(), true);
-			var products = dbContext.Products.ToList();
+            var tester = new XmlDataContractSerializerTester<IEnumerable<Product>>(new NetDataContractSerializer(), true);
+            var products = dbContext.Products.ToList();
 
-			tester.SerializeAndDeserialize(products);
-		}
+            tester.SerializeAndDeserialize(products);
+        }
 
 
-		[TestMethod]
-		public void ISerializationSurrogate()
-		{
-			dbContext.Configuration.ProxyCreationEnabled = false;
+        [TestMethod]
+        public void ISerializationSurrogate()
+        {
+            dbContext.Configuration.ProxyCreationEnabled = false;
 
-			var tester = new XmlDataContractSerializerTester<IEnumerable<Order_Detail>>(new NetDataContractSerializer(), true);
-			var orderDetails = dbContext.Order_Details.ToList();
+            var tester = new XmlDataContractSerializerTester<IEnumerable<Order_Detail>>(new NetDataContractSerializer(), true);
+            var orderDetails = dbContext.Order_Details.ToList();
 
-			tester.SerializeAndDeserialize(orderDetails);
-		}
+            tester.SerializeAndDeserialize(orderDetails);
+        }
 
-		[TestMethod]
-		public void IDataContractSurrogate()
-		{
-			dbContext.Configuration.ProxyCreationEnabled = true;
-			dbContext.Configuration.LazyLoadingEnabled = true;
+        [TestMethod]
+        public void IDataContractSurrogate()
+        {
+            // Arrange
+            dbContext.Configuration.ProxyCreationEnabled = true;
+            dbContext.Configuration.LazyLoadingEnabled = true;
 
-			var tester = new XmlDataContractSerializerTester<IEnumerable<Order>>(new DataContractSerializer(typeof(IEnumerable<Order>)), true);
-			var orders = dbContext.Orders.ToList();
+            var settings = new DataContractSerializerSettings
+            {
+                DataContractSurrogate = new EntitySurrogate()
+            };
+            var serializer = new DataContractSerializer(typeof(IEnumerable<Order>), settings);
+            var tester = new XmlDataContractSerializerTester<IEnumerable<Order>>(serializer, true);
+            var orders = dbContext.Orders.ToList();
 
-			tester.SerializeAndDeserialize(orders);
-		}
-	}
+            //Act,Assert
+            tester.SerializeAndDeserialize(orders);
+        }
+    }
 }
