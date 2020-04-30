@@ -9,7 +9,7 @@ using Task.DB;
 
 namespace Task
 {
-    public class EntitySurrogate : IDataContractSurrogate
+    public class EntityDataContractSurrogate : IDataContractSurrogate
     {
         private int _count;
 

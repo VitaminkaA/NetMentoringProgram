@@ -4,6 +4,7 @@ using Task.TestHelpers;
 using System.Runtime.Serialization;
 using System.Linq;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 
 namespace Task
 {
@@ -14,32 +15,50 @@ namespace Task
 
         [TestInitialize]
         public void Initialize()
-        {
-            dbContext = new Northwind();
-        }
+            => dbContext = new Northwind();
 
         [TestMethod]
         public void SerializationCallbacks()
         {
+            // Arrange
             dbContext.Configuration.ProxyCreationEnabled = false;
 
-            var tester = new XmlDataContractSerializerTester<IEnumerable<Category>>(new NetDataContractSerializer(), true);
+            var streamingContext = new StreamingContext(StreamingContextStates.Other,
+                (dbContext as IObjectContextAdapter)?.ObjectContext);
+            var netDataContractSerializer = new NetDataContractSerializer(streamingContext);
+
+            var tester = new XmlDataContractSerializerTester<IEnumerable<Category>>(netDataContractSerializer, true);
             var categories = dbContext.Categories.ToList();
 
-            var c = categories.First();
+            // Act
+            var res = tester.SerializeAndDeserialize(categories).FirstOrDefault();
 
-            tester.SerializeAndDeserialize(categories);
+            // Assert
+            Assert.IsNotNull(res);
+            Assert.IsNotNull(res.Products.FirstOrDefault());
         }
 
         [TestMethod]
         public void ISerializable()
         {
+            // Arrange
             dbContext.Configuration.ProxyCreationEnabled = false;
 
-            var tester = new XmlDataContractSerializerTester<IEnumerable<Product>>(new NetDataContractSerializer(), true);
+            var streamingContext = new StreamingContext(StreamingContextStates.Other,
+                (dbContext as IObjectContextAdapter)?.ObjectContext);
+            var netDataContractSerializer = new NetDataContractSerializer(streamingContext);
+
+            var tester = new XmlDataContractSerializerTester<IEnumerable<Product>>(netDataContractSerializer, true);
             var products = dbContext.Products.ToList();
 
-            tester.SerializeAndDeserialize(products);
+            // Act
+            var res = tester.SerializeAndDeserialize(products).FirstOrDefault();
+
+            // Assert
+            Assert.IsNotNull(res);
+            Assert.IsNotNull(res.Supplier);
+            Assert.IsNotNull(res.Category);
+            Assert.IsNotNull(res.Order_Details);
         }
 
 
@@ -48,10 +67,21 @@ namespace Task
         {
             dbContext.Configuration.ProxyCreationEnabled = false;
 
-            var tester = new XmlDataContractSerializerTester<IEnumerable<Order_Detail>>(new NetDataContractSerializer(), true);
+            var streamingContext = new StreamingContext(StreamingContextStates.Other,
+                (dbContext as IObjectContextAdapter)?.ObjectContext);
+            var netDataContractSerializer = new NetDataContractSerializer(streamingContext)
+            {
+                SurrogateSelector = new OrderDetailsSurrogateSelector()
+            };
+            var tester = new XmlDataContractSerializerTester<IEnumerable<Order_Detail>>(netDataContractSerializer, true);
             var orderDetails = dbContext.Order_Details.ToList();
 
-            tester.SerializeAndDeserialize(orderDetails);
+            var res = tester.SerializeAndDeserialize(orderDetails).FirstOrDefault();
+
+            // Assert
+            Assert.IsNotNull(res);
+            Assert.IsNotNull(res.Order);
+            Assert.IsNotNull(res.Product);
         }
 
         [TestMethod]
@@ -63,14 +93,20 @@ namespace Task
 
             var settings = new DataContractSerializerSettings
             {
-                DataContractSurrogate = new EntitySurrogate()
+                DataContractSurrogate = new EntityDataContractSurrogate()
             };
             var serializer = new DataContractSerializer(typeof(IEnumerable<Order>), settings);
             var tester = new XmlDataContractSerializerTester<IEnumerable<Order>>(serializer, true);
             var orders = dbContext.Orders.ToList();
 
             //Act,Assert
-            tester.SerializeAndDeserialize(orders);
+            var res = tester.SerializeAndDeserialize(orders).FirstOrDefault();
+
+            // Assert
+            Assert.IsNotNull(res);
+            Assert.IsNotNull(res.Customer);
+            Assert.IsNotNull(res.Employee);
+            Assert.IsNotNull(res.Order_Details.FirstOrDefault());
         }
     }
 }
